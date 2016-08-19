@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.wangdm</groupId>
-  <artifactId>wangdm-core</artifactId>
+  <artifactId>wangdm-user</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>wangdm-core</name>
+  <name>wangdm-user</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -196,17 +196,17 @@
           <version>${freemarker.version}</version>
     </dependency>
 
-    <!-- wangdm-base -->
+    <!-- wangdm-core -->
     <dependency>
           <groupId>com.wangdm</groupId>
-          <artifactId>wangdm-base</artifactId>
+          <artifactId>wangdm-core</artifactId>
           <version>${wangdm.version}</version>
     </dependency>
 
   </dependencies>
    
   <build>
-    <finalName>wangdm-base</finalName>
+    <finalName>wangdm-user</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
