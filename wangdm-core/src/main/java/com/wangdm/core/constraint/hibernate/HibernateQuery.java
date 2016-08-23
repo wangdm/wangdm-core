@@ -1,4 +1,4 @@
-package com.wangdm.core.query.hibernate;
+package com.wangdm.core.constraint.hibernate;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,11 +12,11 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.wangdm.core.query.ConditionBean;
-import com.wangdm.core.query.ConditionBean.ConditionType;
-import com.wangdm.core.query.QueryCondition;
+import com.wangdm.core.constraint.CompareBean;
+import com.wangdm.core.constraint.Constraint;
+import com.wangdm.core.constraint.CompareBean.ConditionType;
 
-public class HibernateQuery extends QueryCondition{
+public class HibernateQuery extends Constraint{
     
     private static final Logger log = LoggerFactory.getLogger(HibernateQuery.class);
     
@@ -26,7 +26,7 @@ public class HibernateQuery extends QueryCondition{
     
     private Map<String, String> likeProperty = null;
     
-    private Map<String, ConditionBean> conditionProperty = null;
+    private Map<String, CompareBean> conditionProperty = null;
     
     private Map<String, OrderType> orderProperty = null;
     
@@ -42,7 +42,7 @@ public class HibernateQuery extends QueryCondition{
         return this.likeProperty;
     }
     
-    public Map<String, ConditionBean> getConditionProperty(){
+    public Map<String, CompareBean> getConditionProperty(){
         return this.conditionProperty;
     }
     
@@ -80,9 +80,9 @@ public class HibernateQuery extends QueryCondition{
     @Override
     public void addGreaterCondition(String prop, Object value) {
         if(conditionProperty == null){
-            conditionProperty = new HashMap<String, ConditionBean>();
+            conditionProperty = new HashMap<String, CompareBean>();
         }
-        ConditionBean bean = new ConditionBean(ConditionType.GE, value);
+        CompareBean bean = new CompareBean(ConditionType.GE, value);
         conditionProperty.put(prop, bean);
         log.debug("add query condition property("+prop+") > value("+value+")");
     }
@@ -90,9 +90,9 @@ public class HibernateQuery extends QueryCondition{
     @Override
     public void addLessCondition(String prop, Object value) {
         if(conditionProperty == null){
-            conditionProperty = new HashMap<String, ConditionBean>();
+            conditionProperty = new HashMap<String, CompareBean>();
         }
-        ConditionBean bean = new ConditionBean(ConditionType.LE, value);
+        CompareBean bean = new CompareBean(ConditionType.LE, value);
         conditionProperty.put(prop, bean);
         log.debug("add query condition property("+prop+") < value("+value+")");
     }
@@ -100,9 +100,9 @@ public class HibernateQuery extends QueryCondition{
     @Override
     public void addBetweenCondition(String prop, Object min, Object max) {
         if(conditionProperty == null){
-            conditionProperty = new HashMap<String, ConditionBean>();
+            conditionProperty = new HashMap<String, CompareBean>();
         }
-        ConditionBean bean = new ConditionBean(max, min);
+        CompareBean bean = new CompareBean(max, min);
         conditionProperty.put(prop, bean);
         log.debug("add query condition property("+prop+") between min("+min+") and max("+ max+")");
     }
@@ -158,11 +158,11 @@ public class HibernateQuery extends QueryCondition{
             }
         }
         
-        Map<String,ConditionBean> conditionColumn = this.getConditionProperty();
+        Map<String,CompareBean> conditionColumn = this.getConditionProperty();
         if(conditionColumn!=null){
             Set<String> keySet = nonColumn.keySet();
             for(String key : keySet){
-                ConditionBean bean = conditionColumn.get(key);
+                CompareBean bean = conditionColumn.get(key);
                 switch(bean.getType()){
                     case GT:
                         c.add(Restrictions.gt(key, bean.getValue()));

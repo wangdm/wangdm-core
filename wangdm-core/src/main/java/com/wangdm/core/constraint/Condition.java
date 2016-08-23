@@ -1,4 +1,4 @@
-package com.wangdm.core.query;
+package com.wangdm.core.constraint;
 
 public interface Condition {
     

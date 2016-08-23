@@ -1,6 +1,6 @@
-package com.wangdm.core.query;
+package com.wangdm.core.constraint;
 
-public final class ConditionBean {
+public final class CompareBean {
     
     public enum ConditionType{GT,LT,GE,LE,BETWEEN};
     
@@ -12,14 +12,14 @@ public final class ConditionBean {
     
     private Object minValue;
     
-    public ConditionBean(){}
+    public CompareBean(){}
     
-    public ConditionBean(ConditionType type, Object value){
+    public CompareBean(ConditionType type, Object value){
         this.type = type;
         this.value = value;
     }
     
-    public ConditionBean(Object max, Object min){
+    public CompareBean(Object max, Object min){
         this.type = ConditionType.BETWEEN;
         this.maxValue = max;
         this.minValue = min;
