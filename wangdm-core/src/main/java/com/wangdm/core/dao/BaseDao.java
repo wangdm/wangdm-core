@@ -3,8 +3,8 @@ package com.wangdm.core.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import com.wangdm.core.query.Condition;
-import com.wangdm.core.query.Page;
+import com.wangdm.core.constraint.Condition;
+import com.wangdm.core.constraint.Page;
 
 public interface BaseDao<T> {
     

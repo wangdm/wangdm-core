@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.wangdm.core.constraint.Condition;
+import com.wangdm.core.constraint.Page;
 import com.wangdm.core.dao.BaseDao;
-import com.wangdm.core.query.Condition;
-import com.wangdm.core.query.Page;
 
 @SuppressWarnings("unchecked")
 @Repository("baseDao")
@@ -92,14 +92,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         
         c.setProjection(Projections.rowCount());
         Long rowCount = (Long)c.uniqueResult();
-        int count = 0;
         if(rowCount!=null){
-            count = rowCount.intValue();
+            page.setTotalCount(rowCount);
         }
-        page.setTotalCount(Integer.valueOf(count));
         
         List<T> list = null;
-        if(count>0){
+        if(rowCount.intValue()>0){
             c.setProjection(null);
             ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
             c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
@@ -116,14 +114,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         
         c.setProjection(Projections.rowCount());
         Long rowCount = (Long)c.uniqueResult();
-        int count = 0;
         if(rowCount!=null){
-            count = rowCount.intValue();
+            page.setTotalCount(rowCount);
         }
-        page.setTotalCount(count);
         
         List<T> list = null;
-        if(count>0){
+        if(rowCount.intValue()>0){
             c.setProjection(null);
             c.addOrder(Order.asc(order));
             c.setMaxResults(page.getPageSize());
@@ -201,8 +197,18 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public Long countByColumn(String column, Serializable id) {
-        // TODO Auto-generated method stub
-        return null;
+    public Long countByColumn(String column, Serializable value) {
+        
+        Criteria c = this.getSession().createCriteria(this.clazz);
+        
+        if(value==null){
+            c.add(Restrictions.isNull(column));
+        }else{
+            c.add(Restrictions.eq(column,value));
+        }
+        
+        c.setProjection(Projections.rowCount());
+        
+        return (Long) c.uniqueResult();
     }
 }
