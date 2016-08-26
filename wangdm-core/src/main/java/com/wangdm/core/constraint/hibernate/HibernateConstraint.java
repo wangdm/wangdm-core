@@ -1,7 +1,6 @@
 package com.wangdm.core.constraint.hibernate;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,108 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import com.wangdm.core.constraint.CompareBean;
 import com.wangdm.core.constraint.Constraint;
-import com.wangdm.core.constraint.CompareBean.ConditionType;
 
-public class HibernateQuery extends Constraint{
+public class HibernateConstraint extends Constraint{
     
-    private static final Logger log = LoggerFactory.getLogger(HibernateQuery.class);
+    private static final Logger log = LoggerFactory.getLogger(HibernateConstraint.class);
     
-    private Map<String, Object> equalProperty = null;
-    
-    private Map<String, Object> nonProperty = null;
-    
-    private Map<String, String> likeProperty = null;
-    
-    private Map<String, CompareBean> conditionProperty = null;
-    
-    private Map<String, OrderType> orderProperty = null;
-    
-    public Map<String, Object> getEqualProperty(){
-        return this.equalProperty;
-    }
-    
-    public Map<String, Object> getNonProperty(){
-        return this.nonProperty;
-    }
-    
-    public Map<String, String> getLikeProperty(){
-        return this.likeProperty;
-    }
-    
-    public Map<String, CompareBean> getConditionProperty(){
-        return this.conditionProperty;
-    }
-    
-    public Map<String, OrderType> getOrderProperty(){
-        return this.orderProperty;
-    }
-    
-    @Override
-    public void addOrder(String prop, OrderType type) {
-        if(orderProperty == null){
-            orderProperty = new HashMap<String, OrderType>();
-        }
-        orderProperty.put(prop, type);
-        log.debug("add order condition property("+prop+") = value("+type+")");
-    }
-
-    @Override
-    public void addEqualCondition(String prop, Object value) {
-        if(equalProperty == null){
-            equalProperty = new HashMap<String, Object>();
-        }
-        equalProperty.put(prop, value);
-        log.debug("add query condition property("+prop+") = value("+value+")");
-    }
-
-    @Override
-    public void addNonCondition(String prop, Object value) {
-        if(nonProperty == null){
-            nonProperty = new HashMap<String, Object>();
-        }
-        nonProperty.put(prop, value);
-        log.debug("add query condition property("+prop+") != value("+value+")");
-    }
-
-    @Override
-    public void addGreaterCondition(String prop, Object value) {
-        if(conditionProperty == null){
-            conditionProperty = new HashMap<String, CompareBean>();
-        }
-        CompareBean bean = new CompareBean(ConditionType.GE, value);
-        conditionProperty.put(prop, bean);
-        log.debug("add query condition property("+prop+") > value("+value+")");
-    }
-
-    @Override
-    public void addLessCondition(String prop, Object value) {
-        if(conditionProperty == null){
-            conditionProperty = new HashMap<String, CompareBean>();
-        }
-        CompareBean bean = new CompareBean(ConditionType.LE, value);
-        conditionProperty.put(prop, bean);
-        log.debug("add query condition property("+prop+") < value("+value+")");
-    }
-
-    @Override
-    public void addBetweenCondition(String prop, Object min, Object max) {
-        if(conditionProperty == null){
-            conditionProperty = new HashMap<String, CompareBean>();
-        }
-        CompareBean bean = new CompareBean(max, min);
-        conditionProperty.put(prop, bean);
-        log.debug("add query condition property("+prop+") between min("+min+") and max("+ max+")");
-    }
-
-    @Override
-    public void addLikeCondition(String prop, String value) {
-        if(likeProperty == null){
-            likeProperty = new HashMap<String, String>();
-        }
-        likeProperty.put(prop, value);
-        log.debug("add query condition property("+prop+") like value("+value+")");
-    }
-
     @Override
     public Object buildConstraint(Object constraint) {
         if(constraint instanceof Criteria){
@@ -160,7 +62,7 @@ public class HibernateQuery extends Constraint{
         
         Map<String,CompareBean> conditionColumn = this.getConditionProperty();
         if(conditionColumn!=null){
-            Set<String> keySet = nonColumn.keySet();
+            Set<String> keySet = conditionColumn.keySet();
             for(String key : keySet){
                 CompareBean bean = conditionColumn.get(key);
                 switch(bean.getType()){
@@ -202,7 +104,10 @@ public class HibernateQuery extends Constraint{
                 }
             }
         }
+        
+        c.setMaxResults(this.getPageSize());
+        c.setFirstResult(this.getCurrentPage() * this.getPageSize());
+        
         return c;
     }
-
 }

@@ -44,12 +44,6 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Dto> listAll() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public List<Dto> query(BaseQuery query) {
         // TODO Auto-generated method stub
         return null;

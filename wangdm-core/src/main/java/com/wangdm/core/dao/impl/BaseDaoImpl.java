@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.wangdm.core.constraint.Condition;
+import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.Page;
 import com.wangdm.core.dao.BaseDao;
 
@@ -167,6 +168,16 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             c.setMaxResults(page.getPageSize());
             c.setFirstResult(page.getCurrentPage() * page.getPageSize());
         }
+        return c.list();
+    }
+
+    @Override
+    public List<T> findByConstraint(Constraint constraint) {
+
+        Criteria c = this.getSession().createCriteria(constraint.getEntityClass());
+        
+        c = (Criteria) constraint.buildConstraint(c);
+        
         return c.list();
     }
     

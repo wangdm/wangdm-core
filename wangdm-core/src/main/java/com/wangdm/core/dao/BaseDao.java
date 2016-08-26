@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.wangdm.core.constraint.Condition;
+import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.Page;
 
 public interface BaseDao<T> {
@@ -25,6 +26,8 @@ public interface BaseDao<T> {
     public List<T> findByColumn(String column, Serializable id);
     
     public List<T> findByColumn(String column, Serializable id, Page page);
+    
+    public List<T> findByConstraint(Constraint constraint);
     
     public List<T> findByCondition(Condition condition, Page page);
     

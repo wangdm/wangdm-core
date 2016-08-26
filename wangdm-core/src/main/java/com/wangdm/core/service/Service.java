@@ -16,7 +16,5 @@ public interface Service<Q extends Query> {
     
     public Dto findById(Serializable id);
     
-    public List<Dto> listAll();
-    
     public List<Dto> query(Q query);
 }
