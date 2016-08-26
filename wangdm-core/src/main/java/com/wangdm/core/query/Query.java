@@ -2,6 +2,8 @@ package com.wangdm.core.query;
 
 public interface Query {
     
-    public Integer getCurrentPage();
+    public int getCurrentPage();
+    
+    public void setCurrentPage(int page);
 
 }

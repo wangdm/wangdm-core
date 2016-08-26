@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import com.wangdm.core.constant.EntityStatus;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Entity {
+public abstract class BaseEntity extends Pojo implements Entity {
 
     private static final long serialVersionUID = 1L;
     
@@ -40,5 +40,5 @@ public abstract class BaseEntity implements Entity {
     public void setStatus(EntityStatus status) {
         this.status = status;
     }
-
+    
 }

@@ -56,7 +56,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }else{
             s.save(entity);
         }
-        return s.getIdentifier(s);
+        return s.getIdentifier(entity);
     }
 
     @Override

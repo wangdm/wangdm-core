@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface DtoMapper {
 
-    String entity();
+    Class<?> entity();
     
     String field();
 }

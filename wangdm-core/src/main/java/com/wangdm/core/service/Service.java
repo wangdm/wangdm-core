@@ -3,17 +3,20 @@ package com.wangdm.core.service;
 import java.io.Serializable;
 import java.util.List;
 
-import com.wangdm.core.entity.Entity;
+import com.wangdm.core.dto.Dto;
+import com.wangdm.core.query.Query;
 
-public interface Service<E extends Entity> {
+public interface Service<Q extends Query> {
     
-    public Serializable create(E entity);
+    public Serializable create(Dto dto);
     
-    public void update(E entity);
+    public void update(Dto dto);
     
     public void delete(Serializable id);
     
-    public E findById(Serializable id);
+    public Dto findById(Serializable id);
     
-    public List<E> listAll();
+    public List<Dto> listAll();
+    
+    public List<Dto> query(Q query);
 }
