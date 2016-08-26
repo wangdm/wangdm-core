@@ -13,3 +13,4 @@ hs_err_pid*
 /wangdm-core/target
 /wangdm-user/target
 /wangdm-ui/target
+/wangdm-test/target
