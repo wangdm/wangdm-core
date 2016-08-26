@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dto.Dto;
+import com.wangdm.core.query.BaseQuery;
 import com.wangdm.user.entity.User;
 import com.wangdm.user.service.UserService;
 
@@ -19,15 +21,14 @@ public class UserServiceImpl implements UserService{
     private BaseDao<User> baseDao;
 
     @Override
-    public Serializable create(User entity) {
-        
-        return baseDao.create(entity);
+    public Serializable create(Dto dto) {
+        User user = (User)dto.toEntity(User.class);
+        return baseDao.create(user);
     }
 
     @Override
-    public void update(User entity) {
-        
-        baseDao.update(entity);
+    public void update(Dto dto) {
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -37,15 +38,21 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findById(Serializable id) {
-        
-        return baseDao.findById(id);
+    public Dto findById(Serializable id) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public List<User> listAll() {
+    public List<Dto> listAll() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-        return baseDao.listAll();
+    @Override
+    public List<Dto> query(BaseQuery query) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
