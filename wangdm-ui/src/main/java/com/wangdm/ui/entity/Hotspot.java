@@ -1,0 +1,94 @@
+package com.wangdm.ui.entity;
+
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import com.wangdm.core.entity.BaseEntity;
+
+@Entity
+@Table(name="hotspot")
+public class Hotspot extends BaseEntity {
+
+    private static final long serialVersionUID = -6254515847826437422L;
+
+    @Column(name="title", nullable=false, length=40)
+    private String title;
+
+    @Column(name="url", nullable=false, length=300)
+    private String url;
+
+    @Column(name="image", nullable=false, length=100)
+    private String image;
+
+    @Column(name="idx", nullable=false)
+    private Integer idx = 0;
+
+    @Column(name="display", nullable=false)
+    private Boolean display = false;
+
+    @Column(name="create_time", nullable=false)
+    private Timestamp createTime;
+
+    @Column(name="expire_time", nullable=false)
+    private Timestamp expireTime;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getIdx() {
+        return idx;
+    }
+
+    public void setIdx(Integer idx) {
+        this.idx = idx;
+    }
+
+    public Boolean getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(Boolean show) {
+        this.display = show;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public Timestamp getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Timestamp expireTime) {
+        this.expireTime = expireTime;
+    }
+
+}
