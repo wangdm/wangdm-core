@@ -14,11 +14,11 @@ public abstract class Constraint implements Condition, Order ,Page {
     
     private Class<?> entityClass;
     
-    private Integer currentPage = 0;
+    private int currentPage = 0;
     
-    private Integer pageSize = 0;
+    private int pageSize = 0;
     
-    private Long totalCount = (long) 0;
+    private long totalCount = (long) 0;
     
     private Map<String, Object> equalProperty = null;
     
@@ -38,69 +38,95 @@ public abstract class Constraint implements Condition, Order ,Page {
         this.entityClass = entityClass;
     }
 
-    public Map<String, Object> getEqualProperty(){
-        return this.equalProperty;
+    public Map<String, Object> getEqualProperty() {
+        return equalProperty;
     }
-    
-    public Map<String, Object> getNonProperty(){
-        return this.nonProperty;
+
+    public void setEqualProperty(Map<String, Object> equalProperty) {
+        this.equalProperty = equalProperty;
     }
-    
-    public Map<String, String> getLikeProperty(){
-        return this.likeProperty;
+
+    public Map<String, Object> getNonProperty() {
+        return nonProperty;
     }
-    
-    public Map<String, CompareBean> getConditionProperty(){
-        return this.conditionProperty;
+
+    public void setNonProperty(Map<String, Object> nonProperty) {
+        this.nonProperty = nonProperty;
     }
-    
-    public Map<String, OrderType> getOrderProperty(){
-        return this.orderProperty;
+
+    public Map<String, String> getLikeProperty() {
+        return likeProperty;
+    }
+
+    public void setLikeProperty(Map<String, String> likeProperty) {
+        this.likeProperty = likeProperty;
+    }
+
+    public Map<String, CompareBean> getConditionProperty() {
+        return conditionProperty;
+    }
+
+    public void setConditionProperty(Map<String, CompareBean> conditionProperty) {
+        this.conditionProperty = conditionProperty;
+    }
+
+    public Map<String, OrderType> getOrderProperty() {
+        return orderProperty;
+    }
+
+    public void setOrderProperty(Map<String, OrderType> orderProperty) {
+        this.orderProperty = orderProperty;
     }
 
     @Override
-    public Integer getPageSize() {
+    public int getPageSize() {
         
         return this.pageSize;
     }
 
     @Override
-    public void setPageSize(Integer size) {
+    public void setPageSize(int size) {
         
         this.pageSize = size;
         
     }
 
     @Override
-    public Long getTotalCount() {
+    public long getTotalCount() {
 
         return this.totalCount;
     }
 
     @Override
-    public void setTotalCount(Long count) {
+    public void setTotalCount(long count) {
 
         this.totalCount = count;
         
     }
 
     @Override
-    public Integer getCurrentPage() {
+    public int getCurrentPage() {
 
         return this.currentPage;
     }
 
     @Override
-    public void setCurrentPage(Integer page) {
+    public void setCurrentPage(int page) {
 
         this.currentPage = page;
         
     }
 
     @Override
-    public Integer getTotalPage() {
-        // TODO Auto-generated method stub
-        return null;
+    public int getTotalPage() {
+        
+        long pages = this.totalCount/this.pageSize;
+        long yun = this.totalCount%this.pageSize;
+        if(yun==0){
+            return (int)pages;
+        }else{
+            return (int) pages + 1;
+        }
     }
     
     @Override

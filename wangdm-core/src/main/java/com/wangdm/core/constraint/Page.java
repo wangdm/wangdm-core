@@ -2,17 +2,17 @@ package com.wangdm.core.constraint;
 
 public interface Page {
     
-    public Integer getPageSize();
+    public int getPageSize();
     
-    public void setPageSize(Integer size);
+    public void setPageSize(int size);
     
-    public Long getTotalCount();
+    public long getTotalCount();
     
-    public void setTotalCount(Long count);
+    public void setTotalCount(long count);
     
-    public Integer getCurrentPage();
+    public int getCurrentPage();
     
-    public void setCurrentPage(Integer page);
+    public void setCurrentPage(int page);
     
-    public Integer getTotalPage();
+    public int getTotalPage();
 }

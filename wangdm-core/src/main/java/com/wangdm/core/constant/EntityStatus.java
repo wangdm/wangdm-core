@@ -1,7 +1,7 @@
 package com.wangdm.core.constant;
 
 public enum EntityStatus {
-    UNAURHORIZED(0),FORBIDDEN(1),BLOCKED(2),DELETE(3);
+    UNAURHORIZED(0),NORMAL(1),FORBIDDEN(2),BLOCKED(3),DELETE(4);
     
     private int code;
     
