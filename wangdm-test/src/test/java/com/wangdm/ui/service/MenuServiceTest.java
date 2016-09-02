@@ -22,7 +22,136 @@ public class MenuServiceTest {
 
     @Test
     public void testCreate() {
-        MenuDto dto = new MenuDto();
+        MenuDto dto = null;
+        
+        /*
+        dto = new MenuDto();
+        dto.setName("网站设置");
+        dto.setUrl("listcategory");
+        dto.setIcon("&#xe60d;");
+        dto.setIdx(1);
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("用户管理");
+        dto.setUrl("listcourse");
+        dto.setIcon("&#xe601;");
+        dto.setIdx(2);
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("课程管理");
+        dto.setUrl("listvideo");
+        dto.setIcon("&#xe600;");
+        dto.setIdx(3);
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("设备管理");
+        dto.setUrl("listlive");
+        dto.setIcon("&#xe602;");
+        dto.setIdx(4);
+        dto.setDisplay(true);
+        menuService.create(dto);
+        //*/
+        /*
+        dto = new MenuDto();
+        dto.setName("基本设置");
+        dto.setUrl("listcategory");
+        dto.setIcon("&#xe60d;");
+        dto.setIdx(1);
+        dto.setParentId("1");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("热点管理");
+        dto.setUrl("listcourse");
+        dto.setIcon("&#xe611;");
+        dto.setIdx(2);
+        dto.setParentId("1");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("友情链接");
+        dto.setUrl("listvideo");
+        dto.setIcon("&#xe615;");
+        dto.setIdx(3);
+        dto.setParentId("1");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        //*/
+        //*
+        dto = new MenuDto();
+        dto.setName("用户组管理");
+        dto.setUrl("listcategory");
+        dto.setIcon("&#xe60d;");
+        dto.setIdx(1);
+        dto.setParentId("2");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("角色管理");
+        dto.setUrl("listcourse");
+        dto.setIcon("&#xe611;");
+        dto.setIdx(2);
+        dto.setParentId("2");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("用户管理");
+        dto.setUrl("listvideo");
+        dto.setIcon("&#xe615;");
+        dto.setIdx(3);
+        dto.setParentId("2");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        //*/
+        //*
+        dto = new MenuDto();
+        dto.setName("分类管理");
+        dto.setUrl("listcategory");
+        dto.setIcon("&#xe60d;");
+        dto.setIdx(1);
+        dto.setParentId("3");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("视频管理");
+        dto.setUrl("listcourse");
+        dto.setIcon("&#xe611;");
+        dto.setIdx(2);
+        dto.setParentId("3");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("直播管理");
+        dto.setUrl("listvideo");
+        dto.setIcon("&#xe615;");
+        dto.setIdx(3);
+        dto.setParentId("3");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("课程管理");
+        dto.setUrl("listvideo");
+        dto.setIcon("&#xe615;");
+        dto.setIdx(3);
+        dto.setParentId("3");
+        dto.setDisplay(true);
+        menuService.create(dto);
+        //*/
+        /*
+        dto = new MenuDto();
         dto.setName("课程分类");
         dto.setUrl("listcategory");
         dto.setIcon("fsdfd");
@@ -53,6 +182,7 @@ public class MenuServiceTest {
         dto.setParentId("8");
         dto.setDisplay(true);
         menuService.create(dto);
+        //*/
     }
 
     @Test

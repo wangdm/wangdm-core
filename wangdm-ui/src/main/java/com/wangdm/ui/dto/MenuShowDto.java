@@ -8,6 +8,9 @@ import com.wangdm.ui.entity.Menu;
 
 public class MenuShowDto extends BaseDto {
     
+    @DtoMapper(entity=Menu.class, field="id")
+    private String id;
+    
     @DtoMapper(entity=Menu.class, field="name")
     private String name;
     
@@ -19,7 +22,15 @@ public class MenuShowDto extends BaseDto {
     
     private List<MenuShowDto> children;
 
-    public String getName() {
+    public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
         return name;
     }
 
