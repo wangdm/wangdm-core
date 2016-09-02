@@ -43,10 +43,16 @@ public abstract class BaseDto extends Pojo implements Dto {
                         }else if(mapperFields.length==2){
                             Field entityField = getClassField(clazz, mapperFields[0]);
                             Class<?> innerClazz = entityField.getType();
-                            Object obj = innerClazz.newInstance();
-                            copyValueToObject(obj, getClassField(innerClazz, mapperFields[1]), dtoField);
+                            Object obj = null;
                             entityField.setAccessible(true);
-                            entityField.set(entity, obj);
+                            obj = entityField.get(entity);
+                            if(obj==null){
+                                obj = innerClazz.newInstance();
+                                obj = copyValueToObject(obj, getClassField(innerClazz, mapperFields[1]), dtoField);
+                                entityField.set(entity, obj);
+                            }else{
+                                copyValueToObject(obj, getClassField(innerClazz, mapperFields[1]), dtoField);
+                            }
                         }
                         
                     } catch (InstantiationException e1) {
@@ -108,7 +114,7 @@ public abstract class BaseDto extends Pojo implements Dto {
         
     }
     
-    private void copyValueToObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException{
+    private Object copyValueToObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException{
 
         Class<?> objFieldType = objField.getType();
         
@@ -116,7 +122,7 @@ public abstract class BaseDto extends Pojo implements Dto {
         objField.setAccessible(true);
         Object value = field.get(this);
         if(value==null){
-            return;
+            return null;
         }
         
         if(objFieldType==field.getType()){
@@ -158,6 +164,7 @@ public abstract class BaseDto extends Pojo implements Dto {
         }else{
             throw new IllegalArgumentException();
         }
+        return obj;
     }
     
     private void copyValueFromObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException{

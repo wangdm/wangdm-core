@@ -26,8 +26,8 @@ public class HotspotDto extends BaseDto {
     @DtoMapper(entity = Hotspot.class, field = "idx")
     private Integer idx = 0;
 
-    @DtoMapper(entity = Hotspot.class, field = "show")
-    private Boolean show = false;
+    @DtoMapper(entity = Hotspot.class, field = "display")
+    private Boolean display = false;
 
     @DtoMapper(entity = Hotspot.class, field = "createTime")
     private Timestamp createTime = new Timestamp(System.currentTimeMillis());
@@ -83,12 +83,12 @@ public class HotspotDto extends BaseDto {
         this.idx = idx;
     }
 
-    public Boolean getShow() {
-        return show;
+    public Boolean getDisplay() {
+        return display;
     }
 
-    public void setShow(Boolean show) {
-        this.show = show;
+    public void setDisplay(Boolean display) {
+        this.display = display;
     }
 
     public Timestamp getCreateTime() {
