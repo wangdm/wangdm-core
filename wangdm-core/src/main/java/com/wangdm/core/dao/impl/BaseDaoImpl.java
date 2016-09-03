@@ -80,6 +80,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         Session s = this.getSession();
         if(s!=null){
             Criteria c = s.createCriteria(this.clazz);
+            c.setCacheable(true);
             ClassMetadata metadata = s.getSessionFactory().getClassMetadata(this.clazz);
             c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
             return c.list();
@@ -90,6 +91,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     @Override
     public List<T> listAll(Page page) {
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         
         c.setProjection(Projections.rowCount());
         Long rowCount = (Long)c.uniqueResult();
@@ -112,6 +114,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     @Override
     public List<T> listAll(String order, Page page) {
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         
         c.setProjection(Projections.rowCount());
         Long rowCount = (Long)c.uniqueResult();
@@ -138,6 +141,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     @Override
     public List<T> findByColumn(String column, Serializable value) {
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         if(value==null){
             c.add(Restrictions.isNull(column));
         }else{
@@ -156,6 +160,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     @Override
     public List<T> findByColumn(String column, Serializable value, Page page) {
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         if(value==null){
             c.add(Restrictions.isNull(column));
         }else{
@@ -175,6 +180,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     public List<T> findByConstraint(Constraint constraint) {
 
         Criteria c = this.getSession().createCriteria(constraint.getEntityClass());
+        c.setCacheable(true);
         
         c = (Criteria) constraint.buildConstraint(c);
         
@@ -185,6 +191,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     public List<T> findByCondition(Condition condition, Page page) {
 
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         
         c = (Criteria) condition.buildConstraint(c);
         
@@ -199,6 +206,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     public Long countByCondition(Condition condition) {
 
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         
         c = (Criteria) condition.buildConstraint(c);
 
@@ -211,6 +219,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     public Long countByColumn(String column, Serializable value) {
         
         Criteria c = this.getSession().createCriteria(this.clazz);
+        c.setCacheable(true);
         
         if(value==null){
             c.add(Restrictions.isNull(column));

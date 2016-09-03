@@ -97,6 +97,8 @@ public class MenuServiceImpl implements MenuService {
         for(Menu menu : menuList){
             MenuShowDto dto = new MenuShowDto();
             dto.fromEntity(menu);
+            List<MenuShowDto> childrenDto = this.showAdminChildrenMenu(menu.getId());
+            dto.setChildren(childrenDto);
             dtoList.add(dto);
         }
         
