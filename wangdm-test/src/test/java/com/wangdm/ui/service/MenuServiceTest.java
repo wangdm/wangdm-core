@@ -57,7 +57,7 @@ public class MenuServiceTest {
         dto.setDisplay(true);
         menuService.create(dto);
         //*/
-        /*
+        //*
         dto = new MenuDto();
         dto.setName("基本设置");
         dto.setUrl("listcategory");
@@ -87,9 +87,9 @@ public class MenuServiceTest {
         //*/
         //*
         dto = new MenuDto();
-        dto.setName("用户组管理");
-        dto.setUrl("listcategory");
-        dto.setIcon("&#xe60d;");
+        dto.setName("权限管理");
+        dto.setUrl("listpermission");
+        dto.setIcon("&#xe611;");
         dto.setIdx(1);
         dto.setParentId("2");
         dto.setDisplay(true);
@@ -97,7 +97,7 @@ public class MenuServiceTest {
         
         dto = new MenuDto();
         dto.setName("角色管理");
-        dto.setUrl("listcourse");
+        dto.setUrl("listrole");
         dto.setIcon("&#xe611;");
         dto.setIdx(2);
         dto.setParentId("2");
@@ -105,15 +105,24 @@ public class MenuServiceTest {
         menuService.create(dto);
         
         dto = new MenuDto();
-        dto.setName("用户管理");
-        dto.setUrl("listvideo");
-        dto.setIcon("&#xe615;");
+        dto.setName("用户组管理");
+        dto.setUrl("listgroup");
+        dto.setIcon("&#xe60d;");
         dto.setIdx(3);
         dto.setParentId("2");
         dto.setDisplay(true);
         menuService.create(dto);
+        
+        dto = new MenuDto();
+        dto.setName("用户管理");
+        dto.setUrl("listuser");
+        dto.setIcon("&#xe615;");
+        dto.setIdx(4);
+        dto.setParentId("2");
+        dto.setDisplay(true);
+        menuService.create(dto);
         //*/
-        //*
+        /*
         dto = new MenuDto();
         dto.setName("分类管理");
         dto.setUrl("listcategory");
