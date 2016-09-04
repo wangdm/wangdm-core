@@ -8,7 +8,6 @@ import javax.persistence.Table;
 
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
-import com.wangdm.user.constant.PermissionAction;
 
 @Entity
 @Table(name="role_permission")
@@ -27,6 +26,30 @@ public class RolePermission extends BaseEntity {
     private Permission permission;
     
     @Column(name="action", nullable=false)
-    private PermissionAction action;
+    private int action;
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Permission getPermission() {
+		return permission;
+	}
+
+	public void setPermission(Permission permission) {
+		this.permission = permission;
+	}
+
+	public int getAction() {
+		return action;
+	}
+
+	public void setAction(int action) {
+		this.action = action;
+	}
 
 }

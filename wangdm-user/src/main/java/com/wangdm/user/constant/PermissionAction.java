@@ -1,16 +1,25 @@
 package com.wangdm.user.constant;
 
-public enum PermissionAction {
-    ADD(0),MODIFY(1),DELETE(2),VIEW(3),LIST(4);
+public final class PermissionAction {
     
-    private int code;
+    public static final int ADD = 1;
     
-    private PermissionAction(int code)
-    {
-        this.code = code;
-    }
+    public static final int MODIFY = 2;
     
-    public int toInt(){
-        return this.code;
-    }
+    public static final int DELETE = 4;
+    
+    public static final int VIEW = 8;
+    
+    public static final int LIST = 16;
+    
+    public static final int ERASE = 32;
+    
+    public static final int READ = VIEW | LIST;
+    
+    public static final int WRITE = ADD | MODIFY;
+    
+    public static final int EDIT = READ | WRITE;
+    
+    public static final int ALL = ADD | MODIFY | DELETE | VIEW | LIST | ERASE;
+    
 }

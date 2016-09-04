@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wangdm.core.dao.BaseDao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.BaseQuery;
+import com.wangdm.user.dto.UserLoginDto;
+import com.wangdm.user.dto.UserRegisterDto;
 import com.wangdm.user.entity.User;
 import com.wangdm.user.service.UserService;
 
@@ -48,5 +50,17 @@ public class UserServiceImpl implements UserService{
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public void login(UserLoginDto loginDto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void register(UserRegisterDto registerDto) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

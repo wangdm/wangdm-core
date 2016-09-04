@@ -23,4 +23,28 @@ public class GroupRole extends BaseEntity{
     @ManyToOne
     @JoinColumn(name="roleId", referencedColumnName="id", nullable=false)
     private Role role;
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public static EntityType getEntitytype() {
+		return entityType;
+	}
 }
