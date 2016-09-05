@@ -10,8 +10,13 @@ import com.wangdm.core.entity.Entity;
 import com.wangdm.core.entity.Pojo;
 
 public abstract class BaseDto extends Pojo implements Dto {
-    
+
     public static final Logger log = LoggerFactory.getLogger(BaseDto.class);
+
+    @Override
+    public Long getEntityId() {
+        return null;
+    }
 
     @Override
     public Entity toEntity(Class<?> clazz) {
@@ -29,6 +34,14 @@ public abstract class BaseDto extends Pojo implements Dto {
             e1.printStackTrace();
             return null;
         }
+        return this.toEntity(entity);
+    }
+
+    @Override
+    public Entity toEntity(Entity entity) {
+        Class<?> clazz = entity.getClass();
+        String className = clazz.getName();
+        log.debug("Get "+className+" from "+this.getClass().getName());
         
         Field[] dtoFields = this.getClass().getDeclaredFields();
         for(Field dtoField : dtoFields){
@@ -73,7 +86,7 @@ public abstract class BaseDto extends Pojo implements Dto {
         }
         return entity;
     }
-
+    
     @Override
     public void fromEntity(Entity entity) {
         Class<?> entityClazz = entity.getClass();
