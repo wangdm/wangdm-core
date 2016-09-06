@@ -5,9 +5,8 @@ import java.util.List;
 
 import com.wangdm.core.service.Service;
 import com.wangdm.ui.dto.MenuShowDto;
-import com.wangdm.ui.query.MenuQuery;
 
-public interface MenuService extends Service<MenuQuery> {
+public interface MenuService extends Service {
     
     public List<MenuShowDto> showAdminMainMenu();
 

@@ -15,15 +15,16 @@ import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.constraint.Order.OrderType;
 import com.wangdm.core.dao.BaseDao;
 import com.wangdm.core.dto.Dto;
+import com.wangdm.core.query.Query;
+import com.wangdm.core.service.BaseService;
 import com.wangdm.ui.dto.MenuDto;
 import com.wangdm.ui.dto.MenuShowDto;
 import com.wangdm.ui.entity.Menu;
-import com.wangdm.ui.query.MenuQuery;
 import com.wangdm.ui.service.MenuService;
 
 @Service("menuService")
 @Transactional
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 
     @Autowired
     private BaseDao<Menu> menuDao;
@@ -67,7 +68,7 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Dto> query(MenuQuery query) {
+    public List<Dto> query(Query q) {
         // TODO Auto-generated method stub
         return null;
     }

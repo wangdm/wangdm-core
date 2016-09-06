@@ -15,6 +15,8 @@ import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.constraint.Order.OrderType;
 import com.wangdm.core.dao.BaseDao;
 import com.wangdm.core.dto.Dto;
+import com.wangdm.core.query.Query;
+import com.wangdm.core.service.BaseService;
 import com.wangdm.ui.dto.HotspotDto;
 import com.wangdm.ui.dto.HotspotShowDto;
 import com.wangdm.ui.entity.Hotspot;
@@ -23,7 +25,7 @@ import com.wangdm.ui.service.HotspotService;
 
 @Service("hotspotService")
 @Transactional
-public class HotspotServiceImpl implements HotspotService {
+public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotService {
 
     @Autowired
     private BaseDao<Hotspot> hotspotDao;
@@ -58,14 +60,14 @@ public class HotspotServiceImpl implements HotspotService {
     @Override
     public void delete(Serializable id) {
         
-        hotspotDao.delete(id);
+        hotspotDao.delete(Hotspot.class, id);
 
     }
 
     @Override
     public Dto findById(Serializable id) {
         
-        Hotspot hotspot = hotspotDao.findById(id);
+        Hotspot hotspot = hotspotDao.findById(Hotspot.class, id);
         
         HotspotDto dto = new HotspotDto();
         dto.fromEntity(hotspot);
@@ -74,7 +76,8 @@ public class HotspotServiceImpl implements HotspotService {
     }
 
     @Override
-    public List<Dto> query(HotspotQuery query) {
+    public List<Dto> query(Query q) {
+        HotspotQuery query = (HotspotQuery)q;
         
         Constraint constraint = constraintFactory.createConstraint(Hotspot.class);
         
