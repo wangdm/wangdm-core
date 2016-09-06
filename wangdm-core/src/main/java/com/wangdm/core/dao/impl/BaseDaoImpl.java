@@ -18,12 +18,13 @@ import com.wangdm.core.constraint.Condition;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.Page;
 import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.entity.Entity;
 
 @SuppressWarnings("unchecked")
 @Repository("baseDao")
-public class BaseDaoImpl<T> implements BaseDao<T> {
+public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
 
-    private Class<T> clazz;
+    private Class<E> clazz;
     
     public BaseDaoImpl(){
         String fullClassName = this.getClass().getName();
@@ -32,7 +33,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         {
             //System.out.println("this class name is "+ className);
             ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();  
-            clazz = (Class<T>) type.getActualTypeArguments()[0];
+            clazz = (Class<E>) type.getActualTypeArguments()[0];
         }
     }
     
@@ -50,7 +51,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public Serializable create(T entity){
+    public Serializable create(E entity){
         Session s = this.getSession();
         if(s==null){
             System.out.println("Session is null");
@@ -61,7 +62,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public void update(T entity){
+    public void update(E entity){
         this.getSession().update(entity);
     }
     
@@ -71,12 +72,12 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
     
     @Override
-    public T findById(Serializable id){
-        return (T)this.getSession().get(this.clazz, id);
+    public E findById(Serializable id){
+        return (E)this.getSession().get(this.clazz, id);
     }
 
     @Override
-    public List<T> listAll() {
+    public List<E> listAll() {
         Session s = this.getSession();
         if(s!=null){
             Criteria c = s.createCriteria(this.clazz);
@@ -89,7 +90,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public List<T> listAll(Page page) {
+    public List<E> listAll(Page page) {
         Criteria c = this.getSession().createCriteria(this.clazz);
         c.setCacheable(true);
         
@@ -99,7 +100,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             page.setTotalCount(rowCount);
         }
         
-        List<T> list = null;
+        List<E> list = null;
         if(rowCount.intValue()>0){
             c.setProjection(null);
             ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
@@ -112,7 +113,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public List<T> listAll(String order, Page page) {
+    public List<E> listAll(String order, Page page) {
         Criteria c = this.getSession().createCriteria(this.clazz);
         c.setCacheable(true);
         
@@ -122,7 +123,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             page.setTotalCount(rowCount);
         }
         
-        List<T> list = null;
+        List<E> list = null;
         if(rowCount.intValue()>0){
             c.setProjection(null);
             c.addOrder(Order.asc(order));
@@ -139,7 +140,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * @param value
      */
     @Override
-    public List<T> findByColumn(String column, Serializable value) {
+    public List<E> findByColumn(String column, Serializable value) {
         Criteria c = this.getSession().createCriteria(this.clazz);
         c.setCacheable(true);
         if(value==null){
@@ -158,7 +159,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * @param value
      */
     @Override
-    public List<T> findByColumn(String column, Serializable value, Page page) {
+    public List<E> findByColumn(String column, Serializable value, Page page) {
         Criteria c = this.getSession().createCriteria(this.clazz);
         c.setCacheable(true);
         if(value==null){
@@ -177,7 +178,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
 
     @Override
-    public List<T> findByConstraint(Constraint constraint) {
+    public List<E> findByConstraint(Constraint constraint) {
 
         Criteria c = this.getSession().createCriteria(constraint.getEntityClass());
         c.setCacheable(true);
@@ -188,7 +189,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     }
     
     @Override
-    public List<T> findByCondition(Condition condition, Page page) {
+    public List<E> findByCondition(Condition condition, Page page) {
 
         Criteria c = this.getSession().createCriteria(this.clazz);
         c.setCacheable(true);

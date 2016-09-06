@@ -6,30 +6,31 @@ import java.util.List;
 import com.wangdm.core.constraint.Condition;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.Page;
+import com.wangdm.core.entity.Entity;
 
-public interface BaseDao<T> {
+public interface BaseDao<E extends Entity> {
     
-    public Serializable create(T entity);
+    public Serializable create(E entity);
     
-    public void update(T entity);
+    public void update(E entity);
     
     public void delete(Serializable id);
     
-    public T findById(Serializable id);
+    public E findById(Serializable id);
     
-    public List<T> listAll();
+    public List<E> listAll();
     
-    public List<T> listAll(Page page);
+    public List<E> listAll(Page page);
     
-    public List<T> listAll(String order, Page page);
+    public List<E> listAll(String order, Page page);
     
-    public List<T> findByColumn(String column, Serializable id);
+    public List<E> findByColumn(String column, Serializable id);
     
-    public List<T> findByColumn(String column, Serializable id, Page page);
+    public List<E> findByColumn(String column, Serializable id, Page page);
     
-    public List<T> findByConstraint(Constraint constraint);
+    public List<E> findByConstraint(Constraint constraint);
     
-    public List<T> findByCondition(Condition condition, Page page);
+    public List<E> findByCondition(Condition condition, Page page);
     
     public Long countByColumn(String column, Serializable id);
     
