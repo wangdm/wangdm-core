@@ -14,7 +14,7 @@ public class BaseQuery implements Query, Page {
     
     private int page = 0;
     
-    private int pageSize = 0;
+    private int pageSize = 10;
     
     private long totalCount = (long) 0;
     

@@ -14,9 +14,9 @@ public interface BaseDao<E extends Entity> {
     
     public void update(E entity);
     
-    public void delete(Serializable id);
+    public void delete(Class<?> clazz, Serializable id);
     
-    public E findById(Serializable id);
+    public E findById(Class<?> clazz, Serializable id);
     
     public List<E> listAll();
     

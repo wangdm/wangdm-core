@@ -10,6 +10,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -23,17 +25,24 @@ import com.wangdm.core.entity.Entity;
 @SuppressWarnings("unchecked")
 @Repository("baseDao")
 public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
+    
+    private static final Logger log = LoggerFactory.getLogger(BaseDaoImpl.class);
 
     private Class<E> clazz;
     
     public BaseDaoImpl(){
         String fullClassName = this.getClass().getName();
         String className = fullClassName.substring(fullClassName.lastIndexOf('.')+1);
+        log.debug("this dao class name is "+ fullClassName);
         if(!"BaseDaoImpl".equals(className))
         {
-            //System.out.println("this class name is "+ className);
-            ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();  
-            clazz = (Class<E>) type.getActualTypeArguments()[0];
+            try{
+                ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();  
+                clazz = (Class<E>) type.getActualTypeArguments()[0];
+                log.debug("this entity class name is "+ clazz.getName());
+            }catch(ClassCastException e){
+                log.error("Get parameterizedType failed in"+ fullClassName);
+            }
         }
     }
     
@@ -67,13 +76,14 @@ public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
     }
     
     @Override
-    public void delete(Serializable id){
-        this.getSession().delete(this.findById(id));
+    public void delete(Class<?> clazz, Serializable id){
+        this.getSession().delete(this.findById(clazz, id));
     }
     
     @Override
-    public E findById(Serializable id){
-        return (E)this.getSession().get(this.clazz, id);
+    public E findById(Class<?> clazz, Serializable id){
+        
+        return (E)this.getSession().get(clazz, id);
     }
 
     @Override
