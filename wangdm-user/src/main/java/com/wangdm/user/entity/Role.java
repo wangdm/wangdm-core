@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 import com.wangdm.user.constant.RoleType;
@@ -40,12 +41,14 @@ public class Role extends BaseEntity{
     @OneToMany(targetEntity=GroupRole.class, mappedBy="group")
     private Set<GroupRole> group;
     
+    public Role(){
+        this.setStatus(EntityStatus.NORMAL);
+    }
+    
     public boolean hasPermission(Permission perm, int action){
     	for(RolePermission permission : permissions){
     		if(permission.getPermission().getId()==perm.getId()){
-    			if( (permission.getAction() & action) == action ){
     				return true;
-    			}
     		}
     	}
     	return false;

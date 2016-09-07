@@ -19,5 +19,8 @@
         ">
         
         <bean id="constraintFactory" class="com.wangdm.core.constraint.hibernate.HibernateConstraintFactory" />
+        
+        <bean id="userDao" primary="false" class="com.wangdm.core.dao.impl.BaseDaoImpl"></bean>
+        <bean id="baseDao" primary="true" class="com.wangdm.core.dao.impl.BaseDaoImpl"></bean>
 
 </beans>

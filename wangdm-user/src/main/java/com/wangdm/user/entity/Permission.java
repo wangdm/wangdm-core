@@ -1,14 +1,12 @@
 package com.wangdm.user.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 
@@ -30,11 +28,12 @@ public class Permission extends BaseEntity {
     private String desc;
     
     @ManyToOne
-    @JoinColumn(name="parentId", referencedColumnName="id")
-    private Permission parent;
+    @JoinColumn(name="groupId", referencedColumnName="id")
+    private PermissionGroup group;
     
-    @OneToMany(targetEntity=Permission.class, mappedBy="parent")
-    private List<Permission> children;
+    public Permission(){
+        this.setStatus(EntityStatus.NORMAL);
+    }
 
 	public String getName() {
 		return name;
@@ -60,20 +59,12 @@ public class Permission extends BaseEntity {
 		this.desc = desc;
 	}
 
-	public Permission getParent() {
-		return parent;
+	public PermissionGroup getGroup() {
+		return group;
 	}
 
-	public void setParent(Permission parent) {
-		this.parent = parent;
-	}
-
-	public List<Permission> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<Permission> children) {
-		this.children = children;
+	public void setGroup(PermissionGroup group) {
+		this.group = group;
 	}
 
 }

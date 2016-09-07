@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 
@@ -23,6 +24,10 @@ public class GroupRole extends BaseEntity{
     @ManyToOne
     @JoinColumn(name="roleId", referencedColumnName="id", nullable=false)
     private Role role;
+    
+    public GroupRole(){
+        this.setStatus(EntityStatus.NORMAL);
+    }
 
 	public Group getGroup() {
 		return group;

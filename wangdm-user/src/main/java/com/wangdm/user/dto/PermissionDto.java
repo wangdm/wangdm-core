@@ -18,6 +18,14 @@ public class PermissionDto extends BaseDto {
 	@DtoMapper(entity=Permission.class, field="desc")
 	private String desc;
 
+    @DtoMapper(entity=Permission.class, field="group.id")
+    private String groupId;
+
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
 	public String getId() {
 		return id;
 	}
@@ -49,5 +57,13 @@ public class PermissionDto extends BaseDto {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
 }

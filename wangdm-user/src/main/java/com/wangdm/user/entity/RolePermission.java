@@ -1,11 +1,11 @@
 package com.wangdm.user.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 
@@ -25,8 +25,9 @@ public class RolePermission extends BaseEntity {
     @JoinColumn(name="permissionId", nullable=false)
     private Permission permission;
     
-    @Column(name="action", nullable=false)
-    private int action;
+    public RolePermission(){
+        this.setStatus(EntityStatus.NORMAL);
+    }
 
 	public Role getRole() {
 		return role;
@@ -43,13 +44,4 @@ public class RolePermission extends BaseEntity {
 	public void setPermission(Permission permission) {
 		this.permission = permission;
 	}
-
-	public int getAction() {
-		return action;
-	}
-
-	public void setAction(int action) {
-		this.action = action;
-	}
-
 }
