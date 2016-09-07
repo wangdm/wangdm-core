@@ -12,7 +12,7 @@ public abstract class Constraint implements Condition, Order ,Page {
     
     private static final Logger log = LoggerFactory.getLogger(Constraint.class);
     
-    private Class<?> entityClass;
+    private Class<?> entityClass = null;
     
     private int currentPage = 0;
     
@@ -29,6 +29,20 @@ public abstract class Constraint implements Condition, Order ,Page {
     private Map<String, CompareBean> conditionProperty = null;
     
     private Map<String, OrderType> orderProperty = null;
+    
+    public void clear(){
+        
+        entityClass = null;
+        currentPage = 0;
+        pageSize = 0;
+        totalCount = (long) 0;
+        equalProperty = null;
+        nonProperty = null;
+        likeProperty = null;
+        conditionProperty = null;
+        orderProperty = null;
+        
+    }
     
     public Class<?> getEntityClass() {
         return entityClass;
