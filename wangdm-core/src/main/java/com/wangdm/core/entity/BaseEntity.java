@@ -27,11 +27,6 @@ public abstract class BaseEntity extends Pojo implements Entity {
     }
 
     @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
     public EntityStatus getStatus() {
         return status;
     }

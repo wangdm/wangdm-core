@@ -13,11 +13,6 @@ public abstract class ForeignEntity extends Pojo implements Entity {
     @Column(name="status", nullable=false)
     private EntityStatus status = EntityStatus.UNAURHORIZED;
 
-	@Override
-	public void setId(Long id) {
-		
-	}
-
     @Override
     public EntityStatus getStatus() {
         return status;

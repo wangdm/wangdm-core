@@ -32,11 +32,9 @@ public final class App {
     public void testFromEntity(){
         
         DemoEntity entity = new DemoEntity();
-        entity.setId(Long.valueOf(1));
         entity.setName("wangdm");
         
         TestEntity test = new TestEntity();
-        test.setId(Long.valueOf(20));
         entity.setTest(test);
         
         DemoDto dto = new DemoDto();
