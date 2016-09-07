@@ -13,8 +13,6 @@ import org.hibernate.metadata.ClassMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 
 import com.wangdm.core.constraint.Condition;
 import com.wangdm.core.constraint.Constraint;
@@ -23,7 +21,6 @@ import com.wangdm.core.dao.BaseDao;
 import com.wangdm.core.entity.Entity;
 
 @SuppressWarnings("unchecked")
-@Repository("baseDao")
 public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
     
     private static final Logger log = LoggerFactory.getLogger(BaseDaoImpl.class);
@@ -33,7 +30,7 @@ public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
     public BaseDaoImpl(){
         String fullClassName = this.getClass().getName();
         String className = fullClassName.substring(fullClassName.lastIndexOf('.')+1);
-        log.debug("this dao class name is "+ fullClassName);
+        log.error("this dao class name is "+ fullClassName);
         if(!"BaseDaoImpl".equals(className))
         {
             try{
@@ -45,9 +42,18 @@ public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
             }
         }
     }
-    
+
+    @Override
+    public Class<E> getClazz() {
+        return clazz;
+    }
+
+    @Override
+    public void setClazz(Class<E> clazz) {
+        this.clazz = clazz;
+    }
+
     @Autowired
-    @Qualifier("sessionFactory")
     private SessionFactory sessionFactory;
     
     protected Session getSession(){
@@ -73,6 +79,11 @@ public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
     @Override
     public void update(E entity){
         this.getSession().update(entity);
+    }
+
+    @Override
+    public void delete(E entity) {
+        this.getSession().delete(entity);
     }
     
     @Override

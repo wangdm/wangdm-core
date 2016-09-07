@@ -9,10 +9,16 @@ import com.wangdm.core.constraint.Page;
 import com.wangdm.core.entity.Entity;
 
 public interface BaseDao<E extends Entity> {
+
+    public Class<E> getClazz();
+
+    public void setClazz(Class<E> clazz);
     
     public Serializable create(E entity);
     
     public void update(E entity);
+    
+    public void delete(E entity);
     
     public void delete(Class<?> clazz, Serializable id);
     
