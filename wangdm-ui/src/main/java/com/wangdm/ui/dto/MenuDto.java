@@ -27,6 +27,19 @@ public class MenuDto extends BaseDto {
     @DtoMapper(entity=Menu.class, field="parent.id")
     private String parentId;
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

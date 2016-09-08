@@ -22,6 +22,11 @@ public class MenuShowDto extends BaseDto {
     
     private List<MenuShowDto> children;
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
     public String getId() {
 		return id;
 	}

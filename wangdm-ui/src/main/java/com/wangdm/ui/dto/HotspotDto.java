@@ -35,6 +35,11 @@ public class HotspotDto extends BaseDto {
     @DtoMapper(entity = Hotspot.class, field = "expireTime")
     private Timestamp expireTime = new Timestamp(System.currentTimeMillis()+30*24*60*60*1000);
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+    
     public String getId() {
         return id;
     }

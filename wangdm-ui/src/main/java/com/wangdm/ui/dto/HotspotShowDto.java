@@ -15,6 +15,11 @@ public class HotspotShowDto extends BaseDto {
     @DtoMapper(entity = Hotspot.class, field = "image")
     private String image;
 
+    @Override
+    public Long getEntityId() {
+        return null;
+    }
+
     public String getTitle() {
         return title;
     }
