@@ -15,6 +15,11 @@ public class CertificationDto extends BaseDto {
 	@DtoMapper(entity=Certification.class, field="number")
 	private String number;
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
 	public String getId() {
 		return id;
 	}

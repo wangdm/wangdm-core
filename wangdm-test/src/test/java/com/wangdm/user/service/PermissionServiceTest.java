@@ -11,46 +11,55 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.wangdm.core.dto.Dto;
-import com.wangdm.user.dto.GroupDto;
-import com.wangdm.user.query.GroupQuery;
+import com.wangdm.user.dto.PermissionDto;
+import com.wangdm.user.query.PermissionQuery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:/spring-*.xml")
-public class GroupServiceTest {
+public class PermissionServiceTest {
     
     @Autowired
-    GroupService groupService;
+    PermissionService permService;
 
     @Test
     public void testFindById() {
-        Dto dto = groupService.findById(1L);
-        System.out.println(dto.toString());
+        fail("Not yet implemented");
     }
 
     @Test
     public void testQuery() {
-        GroupQuery query = new GroupQuery();
-        List<Dto> groupList = groupService.query(query);
-        for(Dto dto : groupList){
+        PermissionQuery query = new PermissionQuery();
+        query.setGroupId(1L);
+        List<Dto> dtoList = permService.query(query);
+        for(Dto dto : dtoList){
             System.out.println(dto.toString());
         }
     }
 
     @Test
     public void testCreate() {
-        GroupDto dto = null;
+        PermissionDto dto = new PermissionDto();
         
-        dto = new GroupDto();
-        dto.setName("普教课程");
-        groupService.create(dto);
+        dto.setGroupId("1");
+        dto.setName("adduser");
+        dto.setTitle("添加用户");
+        permService.create(dto);
         
-        dto = new GroupDto();
-        dto.setName("高校课程");
-        groupService.create(dto);
+        dto.setGroupId("1");
+        dto.setName("deluser");
+        dto.setTitle("删除用户");
+        permService.create(dto);
         
-        dto = new GroupDto();
-        dto.setName("兴趣爱好");
-        groupService.create(dto);
+        dto.setGroupId("2");
+        dto.setName("addrole");
+        dto.setTitle("添加角色");
+        permService.create(dto);
+        
+        dto.setGroupId("2");
+        dto.setName("delrole");
+        dto.setTitle("删除用户");
+        permService.create(dto);
+        
     }
 
     @Test
@@ -71,31 +80,6 @@ public class GroupServiceTest {
     @Test
     public void testRestore() {
         fail("Not yet implemented");
-    }
-
-    @Test
-    public void testAssignRole(){
-        
-    }
-
-    @Test
-    public void testRemoveRole(){
-        
-    }
-
-    @Test
-    public void testListRole(){
-        
-    }
-
-    @Test
-    public void testListPermission(){
-        
-    }
-
-    @Test
-    public void testGroupUser(){
-        
     }
 
 }

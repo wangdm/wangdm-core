@@ -7,6 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
@@ -14,13 +16,13 @@ import com.wangdm.core.dao.BaseDao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
-import com.wangdm.user.dto.GroupDto;
 import com.wangdm.user.dto.PermissionDto;
-import com.wangdm.user.entity.Group;
 import com.wangdm.user.entity.Permission;
 import com.wangdm.user.query.PermissionQuery;
 import com.wangdm.user.service.PermissionService;
 
+@Service("permissionService")
+@Transactional
 public class PermissionServiceImpl extends BaseService<Permission> implements PermissionService {
 
     private static final Logger log = LoggerFactory.getLogger(PermissionServiceImpl.class);
@@ -49,7 +51,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     public List<Dto> query(Query q) {
         PermissionQuery query = (PermissionQuery)q;
         
-        Constraint constraint = constraintFactory.createConstraint(Group.class);
+        Constraint constraint = constraintFactory.createConstraint(Permission.class);
         
         if(query.getGroupId()!=null)
             constraint.addEqualCondition("group.id", query.getGroupId());
@@ -71,7 +73,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         
         List<Dto> dtoList = new ArrayList<Dto>(entityList.size());
         for(Permission entity : entityList){
-            Dto dto = new GroupDto();
+            Dto dto = new PermissionDto();
             dto.fromEntity(entity);
             dtoList.add(dto);
         }

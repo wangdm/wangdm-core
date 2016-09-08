@@ -7,6 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
@@ -16,14 +18,16 @@ import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.BaseQuery;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
-import com.wangdm.user.dto.GroupDto;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.dto.RoleDto;
+import com.wangdm.user.dto.RolePermissionDto;
 import com.wangdm.user.entity.Permission;
 import com.wangdm.user.entity.Role;
 import com.wangdm.user.entity.RolePermission;
 import com.wangdm.user.service.RoleService;
 
+@Service("roleService")
+@Transactional
 public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 
     private static final Logger log = LoggerFactory.getLogger(RoleServiceImpl.class);
@@ -77,7 +81,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         
         List<Dto> dtoList = new ArrayList<Dto>(entityList.size());
         for(Role entity : entityList){
-            Dto dto = new GroupDto();
+            Dto dto = new RoleDto();
             dto.fromEntity(entity);
             dtoList.add(dto);
         }
@@ -100,7 +104,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         List<PermissionDto> dtoList = new ArrayList<PermissionDto>(rolePermissionList.size());
         for(RolePermission rolePermission : rolePermissionList){
             PermissionDto dto = new PermissionDto();
-            dto.fromEntity(rolePermission.getRole());
+            dto.fromEntity(rolePermission.getPermission());
             dtoList.add(dto);
         }
         
@@ -108,9 +112,11 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public void assignPermission(Long roleId, PermissionDto perm) {
+    public void assignPermission(RolePermissionDto perm) {
         
-        Long permId = perm.getEntityId();
+        Long roleId = Long.valueOf(perm.getRoleId());
+        
+        Long permId = Long.valueOf(perm.getPermId());
         
         Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
         constraint.addEqualCondition("role.id", roleId);
@@ -137,18 +143,20 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public void assignPermission(Long roleId, List<PermissionDto> perms) {
+    public void assignPermission(List<RolePermissionDto> perms) {
         
-        for(PermissionDto perm : perms){
-            assignPermission(roleId, perm);
+        for(RolePermissionDto perm : perms){
+            assignPermission(perm);
         }
         
     }
 
     @Override
-    public void removePermission(Long roleId, PermissionDto perm) {
+    public void removePermission(RolePermissionDto perm) {
         
-        Long permId = perm.getEntityId();
+        Long roleId = Long.valueOf(perm.getRoleId());
+        
+        Long permId = Long.valueOf(perm.getPermId());
         
         Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
         constraint.addEqualCondition("role.id", roleId);
@@ -162,10 +170,10 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public void removePermission(Long roleId, List<PermissionDto> perms) {
+    public void removePermission(List<RolePermissionDto> perms) {
         
-        for(PermissionDto perm : perms){
-            removePermission(roleId, perm);
+        for(RolePermissionDto perm : perms){
+            removePermission(perm);
         }
         
     }

@@ -21,6 +21,11 @@ public class UserAccountDto extends BaseDto {
 	@DtoMapper(entity=User.class, field="phone")
 	private String phone;
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
 	public String getId() {
 		return id;
 	}

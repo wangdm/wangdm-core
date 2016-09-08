@@ -1,12 +1,15 @@
 package com.wangdm.user.service.impl;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
@@ -15,11 +18,12 @@ import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.BaseQuery;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
-import com.wangdm.user.dto.GroupDto;
 import com.wangdm.user.dto.PermissionGroupDto;
 import com.wangdm.user.entity.PermissionGroup;
 import com.wangdm.user.service.PermissionGroupService;
 
+@Service("permissionGroupService")
+@Transactional
 public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> implements PermissionGroupService {
 
     private static final Logger log = LoggerFactory.getLogger(PermissionGroupServiceImpl.class);
@@ -67,7 +71,7 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
         
         List<Dto> dtoList = new ArrayList<Dto>(entityList.size());
         for(PermissionGroup entity : entityList){
-            Dto dto = new GroupDto();
+            Dto dto = new PermissionGroupDto();
             dto.fromEntity(entity);
             dtoList.add(dto);
         }

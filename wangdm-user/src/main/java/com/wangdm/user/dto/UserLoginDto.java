@@ -10,6 +10,11 @@ public class UserLoginDto extends BaseDto {
 	
 	private String captcha;
 
+    @Override
+    public Long getEntityId() {
+        return null;
+    }
+
 	public String getLoginname() {
 		return loginname;
 	}

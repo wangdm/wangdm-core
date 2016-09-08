@@ -24,6 +24,11 @@ public class UserProfileDto extends BaseDto {
 	@DtoMapper(entity=UserProfile.class, field="motto")
 	private String motto;
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
 	public String getId() {
 		return id;
 	}

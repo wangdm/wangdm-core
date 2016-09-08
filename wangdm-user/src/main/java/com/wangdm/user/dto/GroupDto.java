@@ -15,6 +15,11 @@ public class GroupDto extends BaseDto {
 	@DtoMapper(entity=Group.class, field="desc")
 	private String desc;
 
+    @Override
+    public Long getEntityId() {
+        return Long.valueOf(id);
+    }
+
 	public String getId() {
 		return id;
 	}
