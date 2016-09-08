@@ -40,8 +40,8 @@ public abstract class BaseService<E extends Entity> implements Service {
     public Serializable create(Dto dto) {
         
         E entity = (E) dto.toEntity(clazz);
-        baseDao.create(entity);
-        return null;
+        
+        return baseDao.create(entity);
     }
 
     @Override

@@ -14,11 +14,6 @@ public abstract class BaseDto extends Pojo implements Dto {
     public static final Logger log = LoggerFactory.getLogger(BaseDto.class);
 
     @Override
-    public Long getEntityId() {
-        return null;
-    }
-
-    @Override
     public Entity toEntity(Class<?> clazz) {
         String className = clazz.getName();
         log.debug("Get "+className+" from "+this.getClass().getName());

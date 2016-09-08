@@ -78,4 +78,10 @@ public class DemoDto extends BaseDto {
         super.fromEntity(entity);
 
     }
+
+    @Override
+    public Long getEntityId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
