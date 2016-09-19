@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.BaseQuery;
 import com.wangdm.core.query.Query;
@@ -29,7 +29,7 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
     private static final Logger log = LoggerFactory.getLogger(PermissionGroupServiceImpl.class);
 
     @Autowired
-    private BaseDao<PermissionGroup> baseDao;
+    private Dao<PermissionGroup> baseDao;
     
     @Autowired
     private ConstraintFactory constraintFactory;

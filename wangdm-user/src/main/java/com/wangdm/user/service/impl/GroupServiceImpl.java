@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
@@ -36,22 +36,22 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
     private static final Logger log = LoggerFactory.getLogger(GroupServiceImpl.class);
 
     @Autowired
-    private BaseDao<Group> baseDao;
+    private Dao<Group> baseDao;
     
     @Autowired
-    private BaseDao<Role> roleDao;
+    private Dao<Role> roleDao;
     
     @Autowired
-    private BaseDao<RolePermission> rolePermissionDao;
+    private Dao<RolePermission> rolePermissionDao;
     
     @Autowired
-    private BaseDao<User> userDao;
+    private Dao<User> userDao;
 
     @Autowired
-    private BaseDao<UserGroup> userGroupDao;
+    private Dao<UserGroup> userGroupDao;
 
     @Autowired
-    private BaseDao<GroupRole> groupRoleDao;
+    private Dao<GroupRole> groupRoleDao;
     
     @Autowired
     private ConstraintFactory constraintFactory;

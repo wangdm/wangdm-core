@@ -1,4 +1,4 @@
-package com.wangdm.core.dao.impl;
+package com.wangdm.core.hibernate;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -17,17 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.wangdm.core.constraint.Condition;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.Page;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.entity.Entity;
 
 @SuppressWarnings("unchecked")
-public class BaseDaoImpl<E extends Entity> implements BaseDao<E> {
+public class BaseDao<E extends Entity> implements Dao<E> {
     
-    private static final Logger log = LoggerFactory.getLogger(BaseDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseDao.class);
 
     private Class<E> clazz;
     
-    public BaseDaoImpl(){
+    public BaseDao(){
         String fullClassName = this.getClass().getName();
         String className = fullClassName.substring(fullClassName.lastIndexOf('.')+1);
         log.error("this dao class name is "+ fullClassName);

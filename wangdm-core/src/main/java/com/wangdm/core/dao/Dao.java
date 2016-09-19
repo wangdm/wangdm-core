@@ -8,7 +8,7 @@ import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.Page;
 import com.wangdm.core.entity.Entity;
 
-public interface BaseDao<E extends Entity> {
+public interface Dao<E extends Entity> {
 
     public Class<E> getClazz();
 

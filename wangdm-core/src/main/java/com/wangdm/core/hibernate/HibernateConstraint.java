@@ -1,4 +1,4 @@
-package com.wangdm.core.constraint.hibernate;
+package com.wangdm.core.hibernate;
 
 import java.util.Collection;
 import java.util.Map;

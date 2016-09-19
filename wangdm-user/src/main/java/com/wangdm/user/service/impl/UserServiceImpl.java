@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
@@ -42,22 +42,22 @@ public class UserServiceImpl extends BaseService<User> implements UserService,In
 
     @Autowired
     @Qualifier("userDao")
-    private BaseDao<User> userDao;
+    private Dao<User> userDao;
 
     @Autowired
-    private BaseDao<UserProfile> profileDao;
+    private Dao<UserProfile> profileDao;
 
     @Autowired
-    private BaseDao<Certification> certificationDao;
+    private Dao<Certification> certificationDao;
     
     @Autowired
-    private BaseDao<Role> roleDao;
+    private Dao<Role> roleDao;
     
     @Autowired
-    private BaseDao<RolePermission> rolePermissionDao;
+    private Dao<RolePermission> rolePermissionDao;
 
     @Autowired
-    private BaseDao<UserRole> userRoleDao;
+    private Dao<UserRole> userRoleDao;
     
     @Autowired
     private ConstraintFactory constraintFactory;

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constant.EntityStatus;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.entity.Entity;
 
@@ -20,7 +20,7 @@ public abstract class BaseService<E extends Entity> implements Service {
     private static final Logger log = LoggerFactory.getLogger(BaseService.class);
 
     @Autowired
-    private BaseDao<E> baseDao;
+    private Dao<E> baseDao;
     
     private Class<E> clazz;
     

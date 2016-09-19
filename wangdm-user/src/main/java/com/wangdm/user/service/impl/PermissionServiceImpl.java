@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
@@ -28,7 +28,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     private static final Logger log = LoggerFactory.getLogger(PermissionServiceImpl.class);
 
     @Autowired
-    private BaseDao<Permission> baseDao;
+    private Dao<Permission> baseDao;
     
     @Autowired
     private ConstraintFactory constraintFactory;

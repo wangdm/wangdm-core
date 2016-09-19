@@ -13,7 +13,7 @@ import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.constraint.Order.OrderType;
-import com.wangdm.core.dao.BaseDao;
+import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
@@ -28,7 +28,7 @@ import com.wangdm.ui.service.HotspotService;
 public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotService {
 
     @Autowired
-    private BaseDao<Hotspot> hotspotDao;
+    private Dao<Hotspot> hotspotDao;
     
     @Autowired
     private ConstraintFactory constraintFactory;

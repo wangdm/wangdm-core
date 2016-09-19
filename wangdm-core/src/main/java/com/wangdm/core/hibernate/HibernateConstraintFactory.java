@@ -1,4 +1,4 @@
-package com.wangdm.core.constraint.hibernate;
+package com.wangdm.core.hibernate;
 
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
