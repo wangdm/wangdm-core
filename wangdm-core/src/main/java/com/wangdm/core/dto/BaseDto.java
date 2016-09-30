@@ -1,6 +1,11 @@
 package com.wangdm.core.dto;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +53,7 @@ public abstract class BaseDto extends Pojo implements Dto {
                         String mapperFields[] = mapperFieldName.split("\\.");
                         if(mapperFields.length==1){
                             copyValueToObject(entity, getClassField(clazz,mapperFieldName), dtoField);
+
                         }else if(mapperFields.length==2){
                             Field entityField = getClassField(clazz, mapperFields[0]);
                             Class<?> innerClazz = entityField.getType();
@@ -60,18 +66,23 @@ public abstract class BaseDto extends Pojo implements Dto {
                                 entityField.set(entity, obj);
                             }else{
                                 copyValueToObject(obj, getClassField(innerClazz, mapperFields[1]), dtoField);
+
                             }
                         }
                         
                     } catch (InstantiationException e1) {
                         e1.printStackTrace();
                         return null;
-                    }catch (IllegalArgumentException e) {
+                    } catch (IllegalArgumentException e) {
                         e.printStackTrace();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (NoSuchFieldException e) {
                         log.error(className + " hasn't field " + mapper.field());
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     } catch (SecurityException e) {
                         e.printStackTrace();
@@ -103,7 +114,9 @@ public abstract class BaseDto extends Pojo implements Dto {
                             Class<?> innerClazz = entityField.getType();
                             entityField.setAccessible(true);
                             Object obj = entityField.get(entity);
-                            copyValueFromObject(obj, getClassField(innerClazz, mapperFields[1]), dtoField);
+                            if(obj!=null){
+                                copyValueFromObject(obj, getClassField(innerClazz, mapperFields[1]), dtoField);
+                            }
                         }
                         
                     } catch (IllegalArgumentException e) {
@@ -112,6 +125,10 @@ public abstract class BaseDto extends Pojo implements Dto {
                         e.printStackTrace();
                     } catch (NoSuchFieldException e) {
                         log.error(className + " hasn't field " + mapper.field());
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     } catch (SecurityException e) {
                         e.printStackTrace();
@@ -122,7 +139,7 @@ public abstract class BaseDto extends Pojo implements Dto {
         
     }
     
-    private Object copyValueToObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException{
+    private Object copyValueToObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException{
 
         Class<?> objFieldType = objField.getType();
         
@@ -151,6 +168,15 @@ public abstract class BaseDto extends Pojo implements Dto {
             objField.set(obj, Double.valueOf(value.toString()));
         }else if(objFieldType.getName().equals("java.lang.Boolean")){
             objField.set(obj, Boolean.valueOf(value.toString()));
+        }else if(objFieldType.getName().equals("java.sql.Timestamp")){
+            objField.set(obj, Timestamp.valueOf(value.toString()));
+        }else if(objFieldType.getName().equals("java.sql.Date")){
+            objField.set(obj, Date.valueOf(value.toString()));
+        }else if(objFieldType.getName().equals("java.sql.Time")){
+            objField.set(obj, Time.valueOf(value.toString()));
+        }else if(objFieldType.isEnum()){
+            Method method = objFieldType.getMethod("valueOf", int.class);
+            objField.set(obj, method.invoke(null, value));
         }else if(objFieldType.isPrimitive()){
             if(objFieldType.getName().equals("int")){
                 objField.setInt(obj, Integer.parseInt(value.toString()));
@@ -175,7 +201,7 @@ public abstract class BaseDto extends Pojo implements Dto {
         return obj;
     }
     
-    private void copyValueFromObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException{
+    private void copyValueFromObject(Object obj, Field objField, Field field) throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException, InvocationTargetException{
 
         Class<?> fieldType = field.getType();
         
@@ -204,6 +230,15 @@ public abstract class BaseDto extends Pojo implements Dto {
             field.set(this, Double.valueOf((String) value));
         }else if(fieldType.getName().equals("java.lang.Boolean")){
             field.set(this, Boolean.valueOf((String) value));
+        }else if(fieldType.getName().equals("java.sql.Timestamp")){
+            field.set(this, Timestamp.valueOf(value.toString()));
+        }else if(fieldType.getName().equals("java.sql.Date")){
+            field.set(this, Date.valueOf(value.toString()));
+        }else if(fieldType.getName().equals("java.sql.Time")){
+            field.set(this, Time.valueOf(value.toString()));
+        }else if(fieldType.isEnum()){
+            Method method = fieldType.getMethod("valueOf", int.class);
+            field.set(this, method.invoke(null, value));
         }else if(fieldType.isPrimitive()){
             if(fieldType.getName().equals("int")){
                 field.setInt(this, Integer.parseInt(value.toString()));

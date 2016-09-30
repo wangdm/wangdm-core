@@ -2,6 +2,8 @@ package com.wangdm.core.service;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constant.EntityStatus;
+import com.wangdm.core.constraint.Constraint;
+import com.wangdm.core.constraint.ConstraintFactory;
+import com.wangdm.core.constraint.Order.OrderType;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.entity.Entity;
@@ -21,6 +26,9 @@ public abstract class BaseService<E extends Entity> implements Service {
 
     @Autowired
     private Dao<E> baseDao;
+    
+    @Autowired
+    private ConstraintFactory constraintFactory;
     
     private Class<E> clazz;
     
@@ -86,6 +94,42 @@ public abstract class BaseService<E extends Entity> implements Service {
             baseDao.update(entity);
         }
         
+    }
+
+    @Override
+    public List<Dto> listAll(Class<?> dtoClass) {
+        
+        Constraint constraint = constraintFactory.createConstraint(clazz);
+        
+        List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
+        entityTypeList.add(EntityStatus.NORMAL);
+        constraint.addEqualCondition("status", entityTypeList);
+        
+        constraint.addOrder("id", OrderType.ASC);
+        
+        List<E> entityList = baseDao.findByConstraint(constraint);
+        
+        if(entityList == null || entityList.size()<=0){
+            return null;
+        }
+        
+        List<Dto> dtoList = new ArrayList<Dto>();
+        for(E entity : entityList){
+            Dto dto;
+            try {
+                dto = (Dto) dtoClass.newInstance();
+                dto.fromEntity(entity);
+                dtoList.add(dto);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+                return null;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        
+        return dtoList;
     }
 
 }
