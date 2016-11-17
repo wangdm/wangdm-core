@@ -11,7 +11,7 @@ public abstract class ForeignEntity extends Pojo implements Entity {
 	private static final long serialVersionUID = 558471171157871925L;
 	
     @Column(name="status", nullable=false)
-    private EntityStatus status = EntityStatus.UNAURHORIZED;
+    private EntityStatus status = EntityStatus.NORMAL;
 
     @Override
     public EntityStatus getStatus() {
