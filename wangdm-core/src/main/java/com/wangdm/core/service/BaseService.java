@@ -81,7 +81,7 @@ public abstract class BaseService<E extends Entity> implements Service {
     @Override
     public void erase(Serializable id) {
         
-        baseDao.delete(clazz, id);
+        baseDao.deleteById(clazz, id);
         
     }
 

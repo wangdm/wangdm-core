@@ -1,13 +1,13 @@
 package com.wangdm.core.hibernate;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.slf4j.Logger;
@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wangdm.core.constraint.Condition;
 import com.wangdm.core.constraint.Constraint;
-import com.wangdm.core.constraint.Page;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.entity.Entity;
 
@@ -26,6 +25,10 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     private static final Logger log = LoggerFactory.getLogger(BaseDao.class);
 
     private Class<E> clazz;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+    
     
     public BaseDao(){
         String fullClassName = this.getClass().getName();
@@ -42,137 +45,157 @@ public class BaseDao<E extends Entity> implements Dao<E> {
             }
         }
     }
-
-    @Override
-    public Class<E> getClazz() {
-        return clazz;
-    }
-
-    @Override
-    public void setClazz(Class<E> clazz) {
-        this.clazz = clazz;
-    }
-
-    @Autowired
-    private SessionFactory sessionFactory;
+    
     
     protected Session getSession(){
         if(this.sessionFactory==null)
         {
-            System.out.println("sessionFactory is null");
+            log.error("sessionFactory is null");
             return null;
         }
         return this.sessionFactory.getCurrentSession();
     }
 
+    
+    @Override
+    public Class<E> getClazz() {
+        return clazz;
+    }
+
+    
+    @Override
+    public void setClazz(Class<E> clazz) {
+        this.clazz = clazz;
+    }
+
+    
     @Override
     public Serializable create(E entity){
+        
         Session s = this.getSession();
         if(s==null){
-            System.out.println("Session is null");
+            log.error("Create entity failed, Get Session failed!");
+            return null;
         }else{
             s.save(entity);
         }
         return s.getIdentifier(entity);
     }
 
-    @Override
-    public void update(E entity){
-        this.getSession().update(entity);
-    }
-
-    @Override
-    public void delete(E entity) {
-        this.getSession().delete(entity);
-    }
     
     @Override
-    public void delete(Class<?> clazz, Serializable id){
-        this.getSession().delete(this.findById(clazz, id));
+    public void update(E entity){
+        Session s = this.getSession();
+        if(s==null){
+            log.error("Update entity failed, Get Session failed!");
+        }else{
+            s.update(entity);
+        }
     }
+
+    
+    @Override
+    public void delete(E entity) {
+        Session s = this.getSession();
+        if(s==null){
+            log.error("Delete entity failed, Get Session failed!");
+        }else{
+            s.delete(entity);
+        }
+    }
+    
+    
+    @Override
+    public void deleteById(Serializable id){
+        
+        if(clazz != null){
+            Session s = this.getSession();
+            if(s==null){
+                log.error("Delete entity failed, Get Session failed!");
+            }else{
+                E entity = this.findById(clazz, id);
+                if(entity != null){
+                    s.delete(entity);
+                }else{
+                    log.warn("Delete entity failed, No such entity[id="+id+"]!");
+                }
+            }
+        }else{
+            log.error("You must set the clazz first!");
+        }
+    }
+    
+    
+    @Override
+    public void deleteById(Class<?> clazz, Serializable id){
+
+        Session s = this.getSession();
+        if(s==null){
+            log.error("Delete entity failed, Get Session failed!");
+        }else{
+            E entity = this.findById(clazz, id);
+            if(entity != null){
+                s.delete(entity);
+            }else{
+                log.warn("Delete entity failed, No such entity[id="+id+"]!");
+            }
+        }
+    }
+
+    
+    @Override
+    public void deleteByColumn(String column, Object value) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    
+    @Override
+    public E findById(Serializable id){
+        
+        if(clazz != null){
+            Session s = this.getSession();
+            if(s==null){
+                log.error("Find entity failed, Get Session failed!");
+            }else{
+                return (E) s.get(clazz, id);
+            }
+        }else{
+            log.error("You must set the clazz first!");
+        }
+        
+        return null;
+    }
+    
     
     @Override
     public E findById(Class<?> clazz, Serializable id){
         
-        return (E)this.getSession().get(clazz, id);
+        Session s = this.getSession();
+        if(s==null){
+            log.error("Find entity failed, Get Session failed!");
+        }else{
+            return (E) s.get(clazz, id);
+        }
+        
+        return null;
     }
 
+    
     @Override
     public List<E> listAll() {
         Session s = this.getSession();
-        if(s!=null){
+        if(s != null){
             Criteria c = s.createCriteria(this.clazz);
             c.setCacheable(true);
             ClassMetadata metadata = s.getSessionFactory().getClassMetadata(this.clazz);
             c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
             return c.list();
         }
+        
         return null;
     }
 
-    @Override
-    public List<E> listAll(Page page) {
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        
-        c.setProjection(Projections.rowCount());
-        Long rowCount = (Long)c.uniqueResult();
-        if(rowCount!=null){
-            page.setTotalCount(rowCount);
-        }
-        
-        List<E> list = null;
-        if(rowCount.intValue()>0){
-            c.setProjection(null);
-            ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
-            c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
-            c.setMaxResults(page.getPageSize());
-            c.setFirstResult(page.getCurrentPage()*page.getPageSize());
-            list = c.list();
-        }
-        return list;
-    }
-
-    @Override
-    public List<E> listAll(String order, Page page) {
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        
-        c.setProjection(Projections.rowCount());
-        Long rowCount = (Long)c.uniqueResult();
-        if(rowCount!=null){
-            page.setTotalCount(rowCount);
-        }
-        
-        List<E> list = null;
-        if(rowCount.intValue()>0){
-            c.setProjection(null);
-            c.addOrder(Order.asc(order));
-            c.setMaxResults(page.getPageSize());
-            c.setFirstResult(page.getCurrentPage()*page.getPageSize());
-            list = c.list();
-        }
-        return list;
-    }
-
-    /**
-     * 
-     * @param column
-     * @param value
-     */
-    @Override
-    public List<E> findByColumn(String column, Serializable value) {
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        if(value==null){
-            c.add(Restrictions.isNull(column));
-        }else{
-            c.add(Restrictions.eq(column,value));
-        }
-        ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
-        c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
-        return c.list();
-    }
     
     /**
      * 
@@ -180,24 +203,36 @@ public class BaseDao<E extends Entity> implements Dao<E> {
      * @param value
      */
     @Override
-    public List<E> findByColumn(String column, Serializable value, Page page) {
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        if(value==null){
-            c.add(Restrictions.isNull(column));
-        }else{
-            c.add(Restrictions.eq(column,value));
+    public List<E> findByColumn(String column, Object value) {
+        Session s = this.getSession();
+        if(s != null){
+            Criteria c = s.createCriteria(this.clazz);
+            c.setCacheable(true);
+            if(value == null){
+                c.add(Restrictions.isNull(column));
+            }
+            else if(value instanceof Collection){
+                c.add(Restrictions.in(column, (Collection<?>)value));
+            }
+            else{
+                c.add(Restrictions.eq(column,value));
+            }
+            ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
+            c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
+            return c.list();
         }
-        ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
-        c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
         
-        if(page!=null){
-            c.setMaxResults(page.getPageSize());
-            c.setFirstResult(page.getCurrentPage() * page.getPageSize());
-        }
-        return c.list();
+        return null;
     }
 
+    
+    @Override
+    public List<E> findByCondition(Condition condition) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    
     @Override
     public List<E> findByConstraint(Constraint constraint) {
 
@@ -209,48 +244,4 @@ public class BaseDao<E extends Entity> implements Dao<E> {
         return c.list();
     }
     
-    @Override
-    public List<E> findByCondition(Condition condition, Page page) {
-
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        
-        c = (Criteria) condition.buildConstraint(c);
-        
-        if(page!=null){
-            c.setMaxResults(page.getPageSize());
-            c.setFirstResult(page.getCurrentPage() * page.getPageSize());
-        }
-        return c.list();
-    }
-
-    @Override
-    public Long countByCondition(Condition condition) {
-
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        
-        c = (Criteria) condition.buildConstraint(c);
-
-        c.setProjection(Projections.rowCount());
-        
-        return (Long) c.uniqueResult();
-    }
-
-    @Override
-    public Long countByColumn(String column, Serializable value) {
-        
-        Criteria c = this.getSession().createCriteria(this.clazz);
-        c.setCacheable(true);
-        
-        if(value==null){
-            c.add(Restrictions.isNull(column));
-        }else{
-            c.add(Restrictions.eq(column,value));
-        }
-        
-        c.setProjection(Projections.rowCount());
-        
-        return (Long) c.uniqueResult();
-    }
 }
