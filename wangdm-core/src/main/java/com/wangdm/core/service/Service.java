@@ -21,6 +21,4 @@ public interface Service {
     public Dto findById(Serializable id);
     
     public List<Dto> query(Query query);
-    
-    public List<Dto> listAll(Class<?> dtoClass);
 }
