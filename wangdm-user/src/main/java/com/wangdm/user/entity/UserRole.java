@@ -17,11 +17,11 @@ public class UserRole extends BaseEntity{
     
     public static final EntityType entityType = EntityType.USERROLE;
     
-    @ManyToOne
+    @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="userId", referencedColumnName="id", nullable=false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(targetEntity=Role.class)
     @JoinColumn(name="roleId", referencedColumnName="id", nullable=false)
     private Role role;
     

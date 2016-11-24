@@ -109,5 +109,11 @@ public class Role extends BaseEntity{
 	public void setGroup(Set<GroupRole> group) {
 		this.group = group;
 	}
+
+    @Override
+    public String toString() {
+
+        return "Role [title=" + title + ", name=" + name + ", desc=" + desc + "]";
+    }
     
 }

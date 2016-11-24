@@ -32,6 +32,12 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     
     @Autowired
     private ConstraintFactory constraintFactory;
+
+    @Override
+    public void delete(Serializable id) {
+        
+            baseDao.deleteById(Permission.class, id);
+    }
     
     @Override
     public Dto findById(Serializable id) {

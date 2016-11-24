@@ -32,37 +32,6 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
     
     @Autowired
     private ConstraintFactory constraintFactory;
-    
-    @Override
-    public Serializable create(Dto dto) {
-        
-        HotspotDto hotspotDto = (HotspotDto)dto;
-        
-        Hotspot hotspot = (Hotspot)hotspotDto.toEntity(Hotspot.class);
-        
-        hotspot.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        hotspot.setExpireTime(new Timestamp(System.currentTimeMillis()+(long)30*24*60*60*1000));
-        
-        return hotspotDao.create(hotspot);
-    }
-
-    @Override
-    public void update(Dto dto) {
-
-        HotspotDto hotspotDto = (HotspotDto)dto;
-        
-        Hotspot hotspot = (Hotspot)hotspotDto.toEntity(Hotspot.class);
-        
-        hotspotDao.update(hotspot);
-
-    }
-
-    @Override
-    public void delete(Serializable id) {
-        
-        hotspotDao.delete(Hotspot.class, id);
-
-    }
 
     @Override
     public Dto findById(Serializable id) {
@@ -80,33 +49,32 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
         HotspotQuery query = (HotspotQuery)q;
         
         Constraint constraint = constraintFactory.createConstraint(Hotspot.class);
-        
-        if(query!=null){
-            if(query.getDisplay()!=null){
-                constraint.addEqualCondition("display", query.getDisplay());
-            }
-            
-            if(query.getStatus()!=null){
-                constraint.addEqualCondition("status", query.getStatus());
-            }
-            
-            if(query.getOrder()!=null){
-                constraint.setOrderProperty(query.getOrder());
-            }
-            
-            constraint.setCurrentPage(query.getCurrentPage());
-            constraint.setPageSize(query.getPageSize());
+
+        if(query.getDisplay()!=null){
+            constraint.addEqualCondition("display", query.getDisplay());
         }
         
-        List<Hotspot> hotspotList = hotspotDao.findByConstraint(constraint);
+        if (query.getStatus() != null){
+            constraint.addEqualCondition("status", query.getStatus());
+        }
+
+        if (query.getOrder() != null){
+            constraint.setOrderProperty(query.getOrder());
+        }
+
+        constraint.setPageSize(query.getPageSize());
+        constraint.setCurrentPage(query.getCurrentPage());
         
+        List<Hotspot> hotspotList = hotspotDao.findByConstraint(constraint);
         if(hotspotList == null || hotspotList.size()<=0){
             return null;
         }
         
+        query.setTotalCount(constraint.getTotalCount());
+        
         List<Dto> dtoList = new ArrayList<Dto>();
         for(Hotspot hotspot : hotspotList){
-            HotspotShowDto dto = new HotspotShowDto();
+            HotspotDto dto = new HotspotDto();
             dto.fromEntity(hotspot);
             dtoList.add(dto);
         }

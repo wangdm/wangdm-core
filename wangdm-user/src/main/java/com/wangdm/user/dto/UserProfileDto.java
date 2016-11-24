@@ -11,6 +11,9 @@ public class UserProfileDto extends BaseDto {
 	
 	@DtoMapper(entity=UserProfile.class, field="nickname")
 	private String nickname;
+    
+    @DtoMapper(entity=UserProfile.class, field="realname")
+    private String realname;
 	
 	@DtoMapper(entity=UserProfile.class, field="avatar")
 	private String avatar;
@@ -19,11 +22,20 @@ public class UserProfileDto extends BaseDto {
 	private String gender;
 	
 	@DtoMapper(entity=UserProfile.class, field="age")
-	private String age;
+	private int age;
 	
 	@DtoMapper(entity=UserProfile.class, field="motto")
 	private String motto;
 
+	@DtoMapper(entity=UserProfile.class, field="user.phone")
+	private String phone;
+	
+	@DtoMapper(entity=UserProfile.class, field="user.email")
+	private String email;
+	
+	@DtoMapper(entity=UserProfile.class, field="user.username")
+	private String username;
+	
     @Override
     public Long getEntityId() {
         return Long.valueOf(id);
@@ -45,7 +57,15 @@ public class UserProfileDto extends BaseDto {
 		this.nickname = nickname;
 	}
 
-	public String getAvatar() {
+	public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public String getAvatar() {
 		return avatar;
 	}
 
@@ -61,21 +81,47 @@ public class UserProfileDto extends BaseDto {
 		this.gender = gender;
 	}
 
-	public String getAge() {
-		return age;
-	}
+	
+	public int getAge() {
+        return age;
+    }
 
-	public void setAge(String age) {
-		this.age = age;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-	public String getMotto() {
+    public String getMotto() {
 		return motto;
 	}
 
 	public void setMotto(String motto) {
 		this.motto = motto;
 	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 	
 	
 }

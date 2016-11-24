@@ -66,5 +66,11 @@ public class PermissionGroup extends BaseEntity {
     public void setChildren(List<PermissionGroup> children) {
         this.children = children;
     }
+
+    @Override
+    public String toString() {
+
+        return "PermissionGroup [name=" + name + ", desc=" + desc + "]";
+    }
     
 }

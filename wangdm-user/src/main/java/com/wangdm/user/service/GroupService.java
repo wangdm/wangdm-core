@@ -3,6 +3,8 @@ package com.wangdm.user.service;
 import java.util.List;
 
 import com.wangdm.core.service.Service;
+import com.wangdm.user.dto.GroupDto;
+import com.wangdm.user.dto.GroupTreeDto;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.dto.RoleDto;
 
@@ -16,6 +18,8 @@ public interface GroupService extends Service {
     
     public List<PermissionDto> listPermission(Long groupId);
     
-    public void groupUser(Long groupId, Long userId);
+    public GroupTreeDto getGroupTree(Long groupId);
+    
+    public List<GroupDto> getChildrenGroup(Long groupId);
 
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -28,11 +29,11 @@ public class Group extends BaseEntity {
     @Column(name="description", length=200)
     private String desc;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parentId", referencedColumnName="id")
     private Group parent;
     
-    @OneToMany(targetEntity=Group.class, mappedBy="parent")
+    @OneToMany(targetEntity=Group.class, mappedBy="parent", fetch = FetchType.LAZY)
     private List<Group> children;
 
     @OneToMany(targetEntity=GroupRole.class, mappedBy="role")
@@ -91,5 +92,11 @@ public class Group extends BaseEntity {
 	public void setRoles(Set<GroupRole> roles) {
 		this.roles = roles;
 	}
+
+    @Override
+    public String toString() {
+
+        return "Group [name=" + name + ", desc=" + desc + "]";
+    }
 
 }

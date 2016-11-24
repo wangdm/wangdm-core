@@ -1,7 +1,6 @@
 package com.wangdm.user.service.impl;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +32,12 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
     
     @Autowired
     private ConstraintFactory constraintFactory;
+
+    @Override
+    public void delete(Serializable id) {
+        
+            baseDao.deleteById(PermissionGroup.class, id);
+    }
     
     @Override
     public Dto findById(Serializable id) {

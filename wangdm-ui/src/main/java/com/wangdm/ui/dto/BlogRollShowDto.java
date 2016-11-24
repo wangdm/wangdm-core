@@ -2,20 +2,20 @@ package com.wangdm.ui.dto;
 
 import com.wangdm.core.dto.BaseDto;
 import com.wangdm.core.dto.annotation.DtoMapper;
-import com.wangdm.ui.entity.Hotspot;
+import com.wangdm.ui.entity.BlogRoll;
 
-public class HotspotShowDto extends BaseDto {
+public class BlogRollShowDto extends BaseDto {
 
-    @DtoMapper(entity = Hotspot.class, field = "title")
+    @DtoMapper(entity = BlogRoll.class, field = "title")
     private String title;
 
-    @DtoMapper(entity = Hotspot.class, field = "url")
+    @DtoMapper(entity = BlogRoll.class, field = "url")
     private String url;
 
-    @DtoMapper(entity = Hotspot.class, field = "image")
+    @DtoMapper(entity = BlogRoll.class, field = "image")
     private String image;
 
-    @DtoMapper(entity = Hotspot.class, field = "idx")
+    @DtoMapper(entity = BlogRoll.class, field = "idx")
     private String idx ;
 
     @Override

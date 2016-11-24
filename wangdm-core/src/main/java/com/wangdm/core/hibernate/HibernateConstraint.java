@@ -105,11 +105,6 @@ public class HibernateConstraint extends Constraint{
             }
         }
         
-        if(this.getPageSize()>0){
-            c.setMaxResults(this.getPageSize());
-        }
-        c.setFirstResult(this.getCurrentPage() * this.getPageSize());
-        
         return c;
     }
 }

@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.wangdm.core.entity.BaseEntity;
+import com.wangdm.ui.constant.MenuType;
 
 @Entity
 @Table(name="menu")
@@ -25,7 +26,7 @@ public class Menu extends BaseEntity {
     @Column(name="url", nullable=false, length=300)
     private String url;
 
-    @Column(name="icon", nullable=false, length=100)
+    @Column(name="icon", length=100)
     private String icon;
 
     @Column(name="idx", nullable=false)
@@ -34,8 +35,11 @@ public class Menu extends BaseEntity {
     @Column(name="display", nullable=false)
     private Boolean display = false;
 
-    @Column(name="create_time", nullable=false)
-    private Timestamp createTime;
+    @Column(name="create_time", nullable=false, updatable=false)
+    private Timestamp createTime = new Timestamp(System.currentTimeMillis());;
+
+    @Column(name="type", nullable=false)
+    private MenuType type = MenuType.MENU;
 
     @ManyToOne(targetEntity=Menu.class, fetch=FetchType.LAZY)
     @JoinColumn(name="parentId", referencedColumnName="id")
@@ -90,6 +94,14 @@ public class Menu extends BaseEntity {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public MenuType getType() {
+        return type;
+    }
+
+    public void setType(MenuType type) {
+        this.type = type;
     }
 
     public Menu getParent() {

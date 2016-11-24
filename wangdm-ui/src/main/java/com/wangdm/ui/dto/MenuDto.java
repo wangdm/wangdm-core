@@ -8,6 +8,9 @@ public class MenuDto extends BaseDto {
 
     @DtoMapper(entity=Menu.class, field="id")
     private String id;
+
+    @DtoMapper(entity=Menu.class, field = "status")
+    private String status;
     
     @DtoMapper(entity=Menu.class, field="name")
     private String name;
@@ -19,10 +22,13 @@ public class MenuDto extends BaseDto {
     private String icon;
 
     @DtoMapper(entity=Menu.class, field="idx")
-    private Integer idx = 0;
+    private String idx;
 
     @DtoMapper(entity=Menu.class, field="display")
-    private Boolean display = false;
+    private String display;
+
+    @DtoMapper(entity=Menu.class, field="type")
+    private String type;
 
     @DtoMapper(entity=Menu.class, field="parent.id")
     private String parentId;
@@ -38,6 +44,14 @@ public class MenuDto extends BaseDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getName() {
@@ -64,20 +78,28 @@ public class MenuDto extends BaseDto {
         this.icon = icon;
     }
 
-    public Integer getIdx() {
+    public String getIdx() {
         return idx;
     }
 
-    public void setIdx(Integer idx) {
+    public void setIdx(String idx) {
         this.idx = idx;
     }
 
-    public Boolean getDisplay() {
+    public String getDisplay() {
         return display;
     }
 
-    public void setDisplay(Boolean display) {
+    public void setDisplay(String display) {
         this.display = display;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getParentId() {

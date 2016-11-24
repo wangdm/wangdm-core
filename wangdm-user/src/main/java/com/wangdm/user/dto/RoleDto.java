@@ -21,6 +21,9 @@ public class RoleDto extends BaseDto {
 	@DtoMapper(entity=Role.class, field="type")
 	private String type;
 
+	@DtoMapper(entity=Role.class, field="status")
+	private String status;
+
     @Override
     public Long getEntityId() {
         return Long.valueOf(id);
@@ -64,5 +67,13 @@ public class RoleDto extends BaseDto {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

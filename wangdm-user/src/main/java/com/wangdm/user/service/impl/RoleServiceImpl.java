@@ -20,7 +20,6 @@ import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.dto.RoleDto;
-import com.wangdm.user.dto.RolePermissionDto;
 import com.wangdm.user.entity.Permission;
 import com.wangdm.user.entity.Role;
 import com.wangdm.user.entity.RolePermission;
@@ -34,9 +33,6 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
 
     @Autowired
     private Dao<Role> baseDao;
-    
-    @Autowired
-    private Dao<Permission> permissionDao;
     
     @Autowired
     private Dao<RolePermission> rolePermissionDao;
@@ -90,7 +86,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public List<PermissionDto> listPermission(Long roleId) {
+    public List<PermissionDto> getPermission(Long roleId) {
         
         Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
         constraint.addEqualCondition("status", EntityStatus.NORMAL);
@@ -110,72 +106,38 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         
         return dtoList;
     }
-
+    
     @Override
-    public void assignPermission(RolePermissionDto perm) {
+    public void setPermission(Long roleId, List<PermissionDto> permList) {
         
-        Long roleId = Long.valueOf(perm.getRoleId());
+        if(roleId <= 0 || permList==null || permList.size()<=0){
+            return;
+        }
         
-        Long permId = Long.valueOf(perm.getPermId());
-        
+        Role role = baseDao.findById(Role.class, roleId);
+        if(role == null){
+            return;
+        }
+        //先删除
         Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         constraint.addEqualCondition("role.id", roleId);
-        constraint.addEqualCondition("permission.id", permId);
-        
-        RolePermission rolePermission = null;
         
         List<RolePermission> rolePermissionList = rolePermissionDao.findByConstraint(constraint);
-        if(rolePermissionList==null || rolePermissionList.size()<=0){
-            rolePermission = new RolePermission();
-            rolePermission.setRole(baseDao.findById(Role.class, roleId));
-            Permission p = permissionDao.findById(Permission.class, permId);
-            perm.toEntity(p);
-            rolePermission.setPermission(p);
-            rolePermissionDao.create(rolePermission);
-        }else{
-            rolePermission = rolePermissionList.get(0);
-            if(rolePermission.getStatus()!=EntityStatus.NORMAL){
-                rolePermission.setStatus(EntityStatus.NORMAL);
-                rolePermissionDao.update(rolePermission);
+        if(rolePermissionList != null && rolePermissionList.size()>0){
+            for(RolePermission rolePermission : rolePermissionList){
+                rolePermissionDao.delete(rolePermission);
             }
         }
-        
-    }
-
-    @Override
-    public void assignPermission(List<RolePermissionDto> perms) {
-        
-        for(RolePermissionDto perm : perms){
-            assignPermission(perm);
+        //在添加
+        rolePermissionList = new ArrayList<RolePermission>(permList.size());
+        for(PermissionDto dto : permList){
+            Permission permEntity = (Permission)dto.toEntity(Permission.class);
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setPermission(permEntity);
+            rolePermission.setRole(role);
+            rolePermissionDao.create(rolePermission);
         }
-        
-    }
-
-    @Override
-    public void removePermission(RolePermissionDto perm) {
-        
-        Long roleId = Long.valueOf(perm.getRoleId());
-        
-        Long permId = Long.valueOf(perm.getPermId());
-        
-        Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
-        constraint.addEqualCondition("role.id", roleId);
-        constraint.addEqualCondition("permission.id", permId);
-        
-        List<RolePermission> rolePermissionList = rolePermissionDao.findByConstraint(constraint);
-        if(rolePermissionList!=null && rolePermissionList.size()<=0){
-            RolePermission rolePermission = rolePermissionList.get(0);
-            rolePermissionDao.delete(rolePermission);
-        }
-    }
-
-    @Override
-    public void removePermission(List<RolePermissionDto> perms) {
-        
-        for(RolePermissionDto perm : perms){
-            removePermission(perm);
-        }
-        
     }
 
     @Override

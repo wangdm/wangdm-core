@@ -2,42 +2,42 @@ package com.wangdm.ui.dto;
 
 import com.wangdm.core.dto.BaseDto;
 import com.wangdm.core.dto.annotation.DtoMapper;
-import com.wangdm.ui.entity.Hotspot;
+import com.wangdm.ui.entity.BlogRoll;
 
-public class HotspotDto extends BaseDto {
+/*
+ * 直播课程的实体
+ */
+public class BlogRollDto extends BaseDto {
 
-    @DtoMapper(entity = Hotspot.class, field = "id")
+    @DtoMapper(entity = BlogRoll.class, field = "id")
     private String id;
 
-    @DtoMapper(entity = Hotspot.class, field = "status")
+    @DtoMapper(entity = BlogRoll.class, field = "status")
     private String status;
 
-    @DtoMapper(entity = Hotspot.class, field = "title")
+    @DtoMapper(entity = BlogRoll.class, field = "title")
     private String title;
 
-    @DtoMapper(entity = Hotspot.class, field = "url")
+    @DtoMapper(entity = BlogRoll.class, field = "url")
     private String url;
 
-    @DtoMapper(entity = Hotspot.class, field = "image")
+    @DtoMapper(entity = BlogRoll.class, field = "image")
     private String image;
 
-    @DtoMapper(entity = Hotspot.class, field = "idx")
+    @DtoMapper(entity = BlogRoll.class, field = "idx")
     private String idx ;
 
-    @DtoMapper(entity = Hotspot.class, field = "display")
+    @DtoMapper(entity = BlogRoll.class, field = "display")
     private String display;
 
-    @DtoMapper(entity = Hotspot.class, field = "createTime")
+    @DtoMapper(entity = BlogRoll.class, field = "createTime")
     private String createTime;
-
-    @DtoMapper(entity = Hotspot.class, field = "expireTime")
-    private String expireTime;
 
     @Override
     public Long getEntityId() {
-        return Long.valueOf(id);
+        return Long.parseLong(id);
     }
-    
+
     public String getId() {
         return id;
     }
@@ -94,20 +94,4 @@ public class HotspotDto extends BaseDto {
         this.display = display;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(String expireTime) {
-        this.expireTime = expireTime;
-    }
-    
 }

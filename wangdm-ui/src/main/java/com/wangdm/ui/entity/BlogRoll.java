@@ -8,11 +8,14 @@ import javax.persistence.Table;
 
 import com.wangdm.core.entity.BaseEntity;
 
+/*
+ * 课程视频的分类实体
+ */
 @Entity
-@Table(name="hotspot")
-public class Hotspot extends BaseEntity {
+@Table(name = "blogroll")
+public class BlogRoll extends BaseEntity{
 
-    private static final long serialVersionUID = -6254515847826437422L;
+	private static final long serialVersionUID = 1L;
 
     @Column(name="title", nullable=false, length=40)
     private String title;
@@ -30,10 +33,7 @@ public class Hotspot extends BaseEntity {
     private Boolean display = false;
 
     @Column(name="create_time", nullable=false, updatable=false)
-    private Timestamp createTime = new Timestamp(System.currentTimeMillis());
-
-    @Column(name="expire_time", nullable=false)
-    private Timestamp expireTime = new Timestamp(System.currentTimeMillis());
+    private Timestamp createTime = new Timestamp(System.currentTimeMillis());;
 
     public String getTitle() {
         return title;
@@ -71,8 +71,8 @@ public class Hotspot extends BaseEntity {
         return display;
     }
 
-    public void setDisplay(Boolean show) {
-        this.display = show;
+    public void setDisplay(Boolean display) {
+        this.display = display;
     }
 
     public Timestamp getCreateTime() {
@@ -82,13 +82,5 @@ public class Hotspot extends BaseEntity {
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
-
-    public Timestamp getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(Timestamp expireTime) {
-        this.expireTime = expireTime;
-    }
-
+	
 }

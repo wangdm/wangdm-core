@@ -1,22 +1,20 @@
 package com.wangdm.user.dto;
 
+import java.util.List;
+
 import com.wangdm.core.dto.BaseDto;
 import com.wangdm.core.dto.annotation.DtoMapper;
 import com.wangdm.user.entity.Group;
 
-public class GroupDto extends BaseDto {
+public class GroupTreeDto extends BaseDto {
 
 	@DtoMapper(entity=Group.class, field="id")
 	private String id;
 
-	@DtoMapper(entity=Group.class, field="parent.id")
-	private String parentId;
-
 	@DtoMapper(entity=Group.class, field="name")
 	private String name;
-
-	@DtoMapper(entity=Group.class, field="desc")
-	private String desc;
+	
+	private List<GroupTreeDto> children;
 
     @Override
     public Long getEntityId() {
@@ -31,14 +29,6 @@ public class GroupDto extends BaseDto {
 		this.id = id;
 	}
 
-	public String getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -47,11 +37,12 @@ public class GroupDto extends BaseDto {
 		this.name = name;
 	}
 
-	public String getDesc() {
-		return desc;
+	public List<GroupTreeDto> getChildren() {
+		return children;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setChildren(List<GroupTreeDto> children) {
+		this.children = children;
 	}
+	
 }

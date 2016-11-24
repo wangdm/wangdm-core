@@ -1,14 +1,18 @@
 package com.wangdm.user.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.entity.ForeignEntity;
 import com.wangdm.user.constant.Gender;
 
+@Entity
+@Table(name="user_profile")
 public class UserProfile extends ForeignEntity {
 
 	private static final long serialVersionUID = -5198650525243171585L;
@@ -20,6 +24,9 @@ public class UserProfile extends ForeignEntity {
 	
 	@Column(name="nickname", length=20)
 	private String nickname;
+    
+    @Column(name="realname", length=20)
+    private String realname;
 
 	@Column(name="avatar", length=250)
 	private String avatar;
@@ -62,7 +69,15 @@ public class UserProfile extends ForeignEntity {
 		this.nickname = nickname;
 	}
 
-	public String getAvatar() {
+	public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public String getAvatar() {
 		return avatar;
 	}
 

@@ -21,6 +21,9 @@ public class PermissionDto extends BaseDto {
     @DtoMapper(entity=Permission.class, field="group.id")
     private String groupId;
 
+    @DtoMapper(entity=Permission.class, field="group.name")
+    private String groupName;
+
     @Override
     public Long getEntityId() {
         return Long.valueOf(id);
@@ -66,4 +69,11 @@ public class PermissionDto extends BaseDto {
         this.groupId = groupId;
     }
 
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 }

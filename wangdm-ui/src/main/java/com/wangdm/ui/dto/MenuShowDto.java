@@ -11,6 +11,9 @@ public class MenuShowDto extends BaseDto {
     @DtoMapper(entity=Menu.class, field="id")
     private String id;
     
+    @DtoMapper(entity=Menu.class, field="idx")
+    private String idx;
+    
     @DtoMapper(entity=Menu.class, field="name")
     private String name;
     
@@ -24,15 +27,23 @@ public class MenuShowDto extends BaseDto {
 
     @Override
     public Long getEntityId() {
-        return Long.valueOf(id);
+        return Long.parseLong(id);
     }
 
     public String getId() {
-		return id;
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdx() {
+		return idx;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdx(String idx) {
+		this.idx = idx;
 	}
 
 	public String getName() {

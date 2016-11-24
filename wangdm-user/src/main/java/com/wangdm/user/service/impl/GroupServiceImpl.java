@@ -18,14 +18,13 @@ import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.GroupDto;
+import com.wangdm.user.dto.GroupTreeDto;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.dto.RoleDto;
 import com.wangdm.user.entity.Group;
 import com.wangdm.user.entity.GroupRole;
 import com.wangdm.user.entity.Role;
 import com.wangdm.user.entity.RolePermission;
-import com.wangdm.user.entity.User;
-import com.wangdm.user.entity.UserGroup;
 import com.wangdm.user.query.GroupQuery;
 import com.wangdm.user.service.GroupService;
 
@@ -43,12 +42,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
     
     @Autowired
     private Dao<RolePermission> rolePermissionDao;
-    
-    @Autowired
-    private Dao<User> userDao;
-
-    @Autowired
-    private Dao<UserGroup> userGroupDao;
 
     @Autowired
     private Dao<GroupRole> groupRoleDao;
@@ -76,8 +69,13 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
         
         Constraint constraint = constraintFactory.createConstraint(Group.class);
         
-        if(query.getParentId()!=null)
-            constraint.addEqualCondition("parent.id", query.getParentId());
+        if(query.getParentId()!=null){
+        	if(query.getParentId().longValue()<=0){
+        		constraint.addEqualCondition("parent.id", null);
+        	}else{
+        		constraint.addEqualCondition("parent.id", query.getParentId());
+        	}
+        }
             
         if(query.getStatus()!=null)
             constraint.addEqualCondition("status", query.getStatus());
@@ -221,26 +219,103 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
         return dtoList;
     }
 
-    @Override
-    public void groupUser(Long groupId, Long userId) {
+	private List<Group> recursionChildrenGroup(Long groupId) {
+		
+		if(groupId==null || groupId.longValue()<=0){
+			return null;
+		}
+
+        Constraint constraint = constraintFactory.createConstraint(Group.class);
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
+        constraint.addEqualCondition("parent.id", groupId);
+		List<Group> groupList = baseDao.findByConstraint(constraint);
+		
+		if(groupList!=null && groupList.size()>0){
+			for(int i=0; i<groupList.size(); i++){
+				Group group = groupList.get(i);
+				Long id = group.getId();
+				group.setChildren(recursionChildrenGroup(id));
+			}
+		}
+		
+		return groupList;
+	}
+	
+	private GroupTreeDto recursionGroupToDto(Group group){
+		
+		if(group==null){
+			return null;
+		}
+		
+		GroupTreeDto dto = new GroupTreeDto();
+		dto.fromEntity(group);
+		List<Group> children = group.getChildren();
+		if(children!=null && children.size()>0){
+			for(int i=0; i<children.size(); i++){
+				Group child = children.get(i);
+				GroupTreeDto tmp = recursionGroupToDto(child);
+				if(dto!=null){
+					if(dto.getChildren()==null){
+						dto.setChildren(new ArrayList<GroupTreeDto>());
+					}
+					dto.getChildren().add(tmp);
+				}
+			}
+		}
+		
+		return dto;
+	}
+
+	@Override
+	public GroupTreeDto getGroupTree(Long groupId) {
+
+		Group group = null;
+		
+        Constraint constraint = constraintFactory.createConstraint(Group.class);
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
-        if(groupId==null || groupId.longValue()<=0){
-            userGroupDao.delete(UserGroup.class, userId);
+		if(groupId==null || groupId.longValue()<=0){
+	        constraint.addEqualCondition("parent.id", null);
+	        List<Group> groupList = baseDao.findByConstraint(constraint);
+
+			if(groupList!=null && groupList.size()>0){
+				group = groupList.get(0);
+			}
+		}else{
+			group = baseDao.findById(Group.class, groupId);
+		}
+		
+		if(group!=null){
+			group.setChildren(recursionChildrenGroup(group.getId()));
+			return recursionGroupToDto(group);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public List<GroupDto> getChildrenGroup(Long groupId) {
+		
+		if(groupId==null || groupId.longValue()<=0){
+			return null;
+		}
+        
+        Constraint constraint = constraintFactory.createConstraint(Group.class);
+		constraint.addEqualCondition("parent.id", groupId);
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
+        
+        List<Group> entityList = baseDao.findByConstraint(constraint);
+        if(entityList == null || entityList.size()<=0){
+            return null;
         }
         
-        UserGroup userGroup = userGroupDao.findById(UserGroup.class, userId);
-        if(userGroup == null){
-            userGroup = new UserGroup();
-            User user = userDao.findById(User.class, userId);
-            userGroup.setUser(user);
-            userGroup.setGroup(baseDao.findById(Group.class, groupId));
-            userGroupDao.create(userGroup);
-        }else{
-            if(userGroup.getGroup().getId()!=groupId){
-                userGroup.setGroup(baseDao.findById(Group.class, groupId));
-                userGroupDao.update(userGroup);
-            }
+        List<GroupDto> dtoList = new ArrayList<GroupDto>(entityList.size());
+        for(Group entity : entityList){
+        	GroupDto dto = new GroupDto();
+            dto.fromEntity(entity);
+            dtoList.add(dto);
         }
         
-    }
+        return dtoList;
+	}
 }
