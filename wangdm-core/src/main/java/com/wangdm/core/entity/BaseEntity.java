@@ -19,7 +19,7 @@ public abstract class BaseEntity extends Pojo implements Entity {
     private Long id;
     
     @Column(name="status", nullable=false)
-    private EntityStatus status = EntityStatus.UNAUTHORIZED;
+    private EntityStatus status = EntityStatus.NORMAL;
     
     @Override
     public Long getId() {

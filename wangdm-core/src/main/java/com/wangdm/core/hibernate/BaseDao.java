@@ -37,7 +37,7 @@ public class BaseDao<E extends Entity> implements Dao<E> {
         if(!"BaseDaoImpl".equals(className))
         {
             try{
-                ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();  
+                ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();
                 clazz = (Class<E>) type.getActualTypeArguments()[0];
                 log.debug("this entity class name is "+ clazz.getName());
             }catch(ClassCastException e){
@@ -145,7 +145,13 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     
     @Override
     public void deleteByColumn(String column, Object value) {
-        // TODO Auto-generated method stub
+        
+        List<E> entityList = this.findByColumn(column, value);
+        if(entityList!=null && entityList.size()>0){
+            for(int i=0; i<entityList.size(); i++){
+                this.delete(entityList.get(i));
+            }
+        }
         
     }
     
