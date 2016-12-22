@@ -37,7 +37,7 @@ public class BlogRollServiceImpl extends BaseService<BlogRoll> implements BlogRo
 
 	@Override
 	public Dto findById(Serializable id) {
-		BlogRoll entiry = baseDao.findById(BlogRoll.class, id);
+		BlogRoll entiry = baseDao.findById(id, BlogRoll.class);
 		if (entiry == null) {
 			log.info("No such BlogRoll[id=" + id + "] is found");
 			return null;

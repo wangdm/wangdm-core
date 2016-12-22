@@ -29,7 +29,7 @@ public class UserRoleServiceImpl extends BaseService<UserRole> implements UserRo
     
     @Override
     public Dto findById(Serializable id) {
-        UserRole userRole = userRoleDao.findById(UserRole.class, id);
+        UserRole userRole = userRoleDao.findById(id, UserRole.class);
         UserRoleDto dto = new UserRoleDto();
         dto.fromEntity(userRole);
         return dto;

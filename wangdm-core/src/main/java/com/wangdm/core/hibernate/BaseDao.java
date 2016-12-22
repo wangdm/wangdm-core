@@ -113,7 +113,7 @@ public class BaseDao<E extends Entity> implements Dao<E> {
             if(s==null){
                 log.error("Delete entity failed, Get Session failed!");
             }else{
-                E entity = this.findById(clazz, id);
+                E entity = this.findById(id, this.clazz);
                 if(entity != null){
                     s.delete(entity);
                 }else{
@@ -127,13 +127,13 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     
     
     @Override
-    public void deleteById(Class<?> clazz, Serializable id){
+    public void deleteById(Serializable id, Class<?> clazz){
 
         Session s = this.getSession();
         if(s==null){
             log.error("Delete entity failed, Get Session failed!");
         }else{
-            E entity = this.findById(clazz, id);
+            E entity = this.findById(id, clazz);
             if(entity != null){
                 s.delete(entity);
             }else{
@@ -147,6 +147,19 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     public void deleteByColumn(String column, Object value) {
         
         List<E> entityList = this.findByColumn(column, value);
+        if(entityList!=null && entityList.size()>0){
+            for(int i=0; i<entityList.size(); i++){
+                this.delete(entityList.get(i));
+            }
+        }
+        
+    }
+
+
+    @Override
+    public void deleteByColumn(String column, Object value, Class<?> clazz) {
+        
+        List<E> entityList = this.findByColumn(column, value, clazz);
         if(entityList!=null && entityList.size()>0){
             for(int i=0; i<entityList.size(); i++){
                 this.delete(entityList.get(i));
@@ -175,7 +188,7 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     
     
     @Override
-    public E findById(Class<?> clazz, Serializable id){
+    public E findById(Serializable id, Class<?> clazz){
         
         Session s = this.getSession();
         if(s==null){
@@ -203,6 +216,21 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     }
 
     
+    @Override
+    public List<E> listAll(Class<?> clazz) {
+        Session s = this.getSession();
+        if(s != null){
+            Criteria c = s.createCriteria(clazz);
+            c.setCacheable(true);
+            ClassMetadata metadata = s.getSessionFactory().getClassMetadata(this.clazz);
+            c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
+            return c.list();
+        }
+        
+        return null;
+    }
+
+    
     /**
      * 
      * @param column
@@ -213,6 +241,30 @@ public class BaseDao<E extends Entity> implements Dao<E> {
         Session s = this.getSession();
         if(s != null){
             Criteria c = s.createCriteria(this.clazz);
+            c.setCacheable(true);
+            if(value == null){
+                c.add(Restrictions.isNull(column));
+            }
+            else if(value instanceof Collection){
+                c.add(Restrictions.in(column, (Collection<?>)value));
+            }
+            else{
+                c.add(Restrictions.eq(column,value));
+            }
+            ClassMetadata metadata = this.getSession().getSessionFactory().getClassMetadata(this.clazz);
+            c.addOrder(Order.asc(metadata.getIdentifierPropertyName()));
+            return c.list();
+        }
+        
+        return null;
+    }
+
+
+    @Override
+    public List<E> findByColumn(String column, Object value, Class<?> clazz) {
+        Session s = this.getSession();
+        if(s != null){
+            Criteria c = s.createCriteria(clazz);
             c.setCacheable(true);
             if(value == null){
                 c.add(Restrictions.isNull(column));

@@ -41,7 +41,7 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
   
     @Override
     public void delete(Serializable id) {
-        UserProfile userProfile = userProfileDao.findById(UserProfile.class, id);
+        UserProfile userProfile = userProfileDao.findById(id, UserProfile.class);
         if(userProfile!=null){
             userProfile.setStatus(EntityStatus.DELETE);
             userProfileDao.update(userProfile);
@@ -50,12 +50,12 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
 
     @Override
     public void erase(Serializable id) {
-        userProfileDao.deleteById(UserProfile.class, id);
+        userProfileDao.deleteById(id, UserProfile.class);
     }
 
     @Override
     public void restore(Serializable id) {
-        UserProfile userProfile = userProfileDao.findById(UserProfile.class, id);
+        UserProfile userProfile = userProfileDao.findById(id, UserProfile.class);
         if(userProfile!=null){
             userProfile.setStatus(EntityStatus.NORMAL);
             userProfileDao.update(userProfile);
@@ -64,7 +64,7 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
 
     @Override
     public Dto findById(Serializable id) {
-        UserProfile profile = userProfileDao.findById(UserProfile.class, id);
+        UserProfile profile = userProfileDao.findById(id, UserProfile.class);
         UserProfileDto dto = new UserProfileDto();
         dto.fromEntity(profile);
         return dto;

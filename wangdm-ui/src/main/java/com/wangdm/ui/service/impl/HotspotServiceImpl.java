@@ -36,7 +36,7 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
     @Override
     public Dto findById(Serializable id) {
         
-        Hotspot hotspot = hotspotDao.findById(Hotspot.class, id);
+        Hotspot hotspot = hotspotDao.findById(id, Hotspot.class);
         
         HotspotDto dto = new HotspotDto();
         dto.fromEntity(hotspot);

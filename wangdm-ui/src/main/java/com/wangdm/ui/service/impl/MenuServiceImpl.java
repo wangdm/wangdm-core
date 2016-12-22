@@ -35,7 +35,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
 
     @Override
     public Dto findById(Serializable id) {
-    	Menu entity = menuDao.findById(Menu.class, id);
+    	Menu entity = menuDao.findById(id, Menu.class);
     	MenuDto dto = new MenuDto();
     	dto.fromEntity(entity);
         return dto;

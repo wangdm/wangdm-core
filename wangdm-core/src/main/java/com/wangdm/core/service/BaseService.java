@@ -54,7 +54,7 @@ public abstract class BaseService<E extends Entity> implements Service {
             log.warn(dto.getClass().getName()+" must reimplement getEntityId()");
             return;
          }
-        E entity = baseDao.findById(clazz, id);
+        E entity = baseDao.findById(id, clazz);
         if(entity!=null){
             dto.toEntity(entity);
             baseDao.update(entity);
@@ -64,7 +64,7 @@ public abstract class BaseService<E extends Entity> implements Service {
     @Override
     public void delete(Serializable id) {
         
-        E entity = baseDao.findById(clazz, id);
+        E entity = baseDao.findById(id, clazz);
         if( entity != null ){
             entity.setStatus(EntityStatus.DELETE);
             baseDao.update(entity);
@@ -75,14 +75,14 @@ public abstract class BaseService<E extends Entity> implements Service {
     @Override
     public void erase(Serializable id) {
         
-        baseDao.deleteById(clazz, id);
+        baseDao.deleteById(id, clazz);
         
     }
 
     @Override
     public void restore(Serializable id) {
         
-        E entity = baseDao.findById(clazz, id);
+        E entity = baseDao.findById(id, clazz);
         if( entity != null ){
             entity.setStatus(EntityStatus.NORMAL);
             baseDao.update(entity);

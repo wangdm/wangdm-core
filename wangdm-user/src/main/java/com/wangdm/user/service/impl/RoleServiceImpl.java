@@ -43,7 +43,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     @Override
     public Dto findById(Serializable id) {
 
-        Role entiry = baseDao.findById(Role.class, id);
+        Role entiry = baseDao.findById(id, Role.class);
         if(entiry == null){
             log.info("No such role[id="+id+"] is found");
             return null;
@@ -114,7 +114,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
             return;
         }
         
-        Role role = baseDao.findById(Role.class, roleId);
+        Role role = baseDao.findById(roleId, Role.class);
         if(role == null){
             return;
         }

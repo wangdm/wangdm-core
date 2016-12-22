@@ -52,7 +52,7 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
     @Override
     public Dto findById(Serializable id) {
         
-        Group entity = baseDao.findById(Group.class, id);
+        Group entity = baseDao.findById(id, Group.class);
         if(entity == null){
             log.info("No such group[id="+id+"] is found");
             return null;
@@ -119,12 +119,12 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
                 break;
             }
             
-            Group group = baseDao.findById(Group.class, groupId);
+            Group group = baseDao.findById(groupId, Group.class);
             if(group == null){
                 break;
             }
             
-            Role role = roleDao.findById(Role.class, roleId);
+            Role role = roleDao.findById(roleId, Role.class);
             if(role == null){
                 break;
             }
@@ -282,7 +282,7 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
 				group = groupList.get(0);
 			}
 		}else{
-			group = baseDao.findById(Group.class, groupId);
+			group = baseDao.findById(groupId, Group.class);
 		}
 		
 		if(group!=null){

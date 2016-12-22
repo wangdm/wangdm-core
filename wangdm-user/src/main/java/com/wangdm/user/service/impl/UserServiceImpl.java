@@ -91,15 +91,15 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 		}
 
 		if (dto instanceof UserAccountDto) {
-			User user = userDao.findById(User.class, id);
+			User user = userDao.findById(id, User.class);
 			dto.toEntity(user);
 			userDao.update(user);
 		} else if (dto instanceof UserPasswordDto) {
-            User user = userDao.findById(User.class, id);
+            User user = userDao.findById(id, User.class);
             dto.toEntity(user);
             userDao.update(user);
         } else if (dto instanceof UserProfileDto) {
-			UserProfile profile = profileDao.findById(UserProfile.class, id);
+			UserProfile profile = profileDao.findById(id, UserProfile.class);
 			if (profile == null) {
 				profile = (UserProfile) dto.toEntity(UserProfile.class);
 				profileDao.create(profile);
@@ -108,7 +108,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 				profileDao.update(profile);
 			}
 		} else if (dto instanceof Certification) {
-			Certification certification = certificationDao.findById(Certification.class, id);
+			Certification certification = certificationDao.findById(id, Certification.class);
 			if (certification == null) {
 				certification = (Certification) dto.toEntity(Certification.class);
 				certificationDao.create(certification);
@@ -122,7 +122,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 	@Override
 	public void delete(Serializable id) {
 
-		User user = userDao.findById(User.class, id);
+		User user = userDao.findById(id, User.class);
 		if (user != null) {
 			user.setStatus(EntityStatus.DELETE);
 			userDao.update(user);
@@ -131,15 +131,15 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 
 	@Override
 	public void erase(Serializable id) {
-		certificationDao.deleteById(Certification.class, id);
-		profileDao.deleteById(UserProfile.class, id);
-		userDao.deleteById(User.class, id);
+		certificationDao.deleteById(id, Certification.class);
+		profileDao.deleteById(id, UserProfile.class);
+		userDao.deleteById(id, User.class);
 	}
 
 	@Override
 	public void restore(Serializable id) {
 
-		User user = userDao.findById(User.class, id);
+		User user = userDao.findById(id, User.class);
 		if (user != null) {
 			user.setStatus(EntityStatus.NORMAL);
 			userDao.update(user);
@@ -149,7 +149,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
     
     public void verify(Serializable id) {
 
-        User user = userDao.findById(User.class, id);
+        User user = userDao.findById(id, User.class);
         if (user != null) {
             user.setStatus(EntityStatus.NORMAL);
             userDao.update(user);
@@ -159,7 +159,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
     
     public void forbidden(Serializable id) {
 
-        User user = userDao.findById(User.class, id);
+        User user = userDao.findById(id, User.class);
         if (user != null) {
             user.setStatus(EntityStatus.FORBIDDEN);
             userDao.update(user);
@@ -170,7 +170,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 	@Override
 	public Dto findById(Serializable id) {
 
-		User user = userDao.findById(User.class, id);
+		User user = userDao.findById(id, User.class);
 		if (user == null) {
 			log.info("No such user[id=" + id + "] is found");
 			return null;
@@ -224,7 +224,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 		    UserDto dto = new UserDto();
 			dto.fromEntity(user);
 			
-			UserProfile profile = (UserProfile)profileDao.findById(UserProfile.class, user.getId());
+			UserProfile profile = (UserProfile)profileDao.findById(user.getId(), UserProfile.class);
 			dto.fromEntity(profile);
 			
             List<RoleDto> userRoleList = this.listRole(user.getId());
@@ -264,12 +264,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 				break;
 			}
 
-			User user = userDao.findById(User.class, userId);
+			User user = userDao.findById(userId, User.class);
 			if (user == null) {
 				break;
 			}
 
-			Role role = roleDao.findById(Role.class, roleId);
+			Role role = roleDao.findById(roleId, Role.class);
 			if (role == null) {
 				break;
 			}
@@ -309,12 +309,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 
         do {
             
-            Group group = groupDao.findById(Group.class, groupId);
+            Group group = groupDao.findById(groupId, Group.class);
             if(group == null){
                 break;
             }
                 
-            User user = userDao.findById(User.class, userId);
+            User user = userDao.findById(userId, User.class);
             if(user==null){
                 break;
             }

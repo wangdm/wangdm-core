@@ -36,13 +36,13 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     @Override
     public void delete(Serializable id) {
         
-            baseDao.deleteById(Permission.class, id);
+            baseDao.deleteById(id, Permission.class);
     }
     
     @Override
     public Dto findById(Serializable id) {
 
-        Permission entity = baseDao.findById(Permission.class, id);
+        Permission entity = baseDao.findById(id, Permission.class);
         if(entity == null){
             log.info("No such permission[id="+id+"] is found");
             return null;

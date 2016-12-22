@@ -36,13 +36,13 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
     @Override
     public void delete(Serializable id) {
         
-            baseDao.deleteById(PermissionGroup.class, id);
+            baseDao.deleteById(id, PermissionGroup.class);
     }
     
     @Override
     public Dto findById(Serializable id) {
 
-        PermissionGroup entity = baseDao.findById(PermissionGroup.class, id);
+        PermissionGroup entity = baseDao.findById(id, PermissionGroup.class);
         if(entity == null){
             log.info("No such PermissionGroup[id="+id+"] is found");
             return null;
