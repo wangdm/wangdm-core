@@ -1,16 +1,17 @@
 package com.wangdm.user.query;
 
-import com.wangdm.core.query.BaseQuery;
+import com.wangdm.core.query.PageQuery;
 
-public class PermissionQuery extends BaseQuery {
-
-    private Long groupId;
-
-    public Long getGroupId() {
-        return groupId;
+public class PermissionQuery extends PageQuery {
+    
+    private Long group;
+    
+    public Long getGroup() {
+        return group;
     }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    
+    public void setGroup(Long group) {
+        this.group = group;
     }
+    
 }

@@ -16,6 +16,7 @@ import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.constant.Gender;
 import com.wangdm.user.dto.UserAccountDto;
@@ -72,16 +73,13 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
     
 
     @Override
-    public List<Dto> query(Query q) {
+    public QueryResult query(Query q) {
         UserQuery query = (UserQuery)q;
         
         Constraint constraint = constraintFactory.createConstraint(UserProfile.class);
 
         if(query.getStatus()!=null)
             constraint.addEqualCondition("status", query.getStatus());
-
-        if(query.getOrder()!=null)
-            constraint.setOrderProperty(query.getOrder());
         
         List<UserProfile> userList = userProfileDao.findByConstraint(constraint);
         if(userList == null || userList.size()<=0){
@@ -94,7 +92,8 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
             dto.fromEntity(user);
             dtoList.add(dto);
         }
-        return dtoList;
+        
+        return new QueryResult(1,dtoList.size(),dtoList.size(),dtoList);
     }
     
     

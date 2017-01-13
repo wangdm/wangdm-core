@@ -1,10 +1,10 @@
 package com.wangdm.core.service;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 
 public interface Service {
     
@@ -20,5 +20,5 @@ public interface Service {
     
     public Dto findById(Serializable id);
     
-    public List<Dto> query(Query query);
+    public QueryResult query(Query query);
 }

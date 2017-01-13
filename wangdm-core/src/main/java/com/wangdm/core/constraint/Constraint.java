@@ -6,19 +6,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.CompareBean.ConditionType;
 
-public abstract class Constraint implements Condition, Order ,Page {
+public abstract class Constraint implements Condition {
     
     private static final Logger log = LoggerFactory.getLogger(Constraint.class);
     
     private Class<?> entityClass = null;
-    
-    private int currentPage = 0;
-    
-    private int pageSize = 0;
-    
-    private long totalCount = (long) 0;
     
     private Map<String, Object> equalProperty = null;
     
@@ -28,14 +23,22 @@ public abstract class Constraint implements Condition, Order ,Page {
     
     private Map<String, CompareBean> conditionProperty = null;
     
-    private Map<String, OrderType> orderProperty = null;
+    private Integer page = 0;
+    
+    private Integer size = 20;
+    
+    private Long amount = (long) 0;
+    
+    private String orderProperty = null;
+    
+    private OrderType orderType = OrderType.ASC;
     
     public void clear(){
         
         entityClass = null;
-        currentPage = 0;
-        pageSize = 0;
-        totalCount = (long) 0;
+        page = 0;
+        size = 20;
+        amount = (long) 0;
         equalProperty = null;
         nonProperty = null;
         likeProperty = null;
@@ -82,74 +85,6 @@ public abstract class Constraint implements Condition, Order ,Page {
 
     public void setConditionProperty(Map<String, CompareBean> conditionProperty) {
         this.conditionProperty = conditionProperty;
-    }
-
-    public Map<String, OrderType> getOrderProperty() {
-        return orderProperty;
-    }
-
-    public void setOrderProperty(Map<String, OrderType> orderProperty) {
-        this.orderProperty = orderProperty;
-    }
-
-    @Override
-    public int getPageSize() {
-        
-        return this.pageSize;
-    }
-
-    @Override
-    public void setPageSize(int size) {
-        
-        this.pageSize = size;
-        
-    }
-
-    @Override
-    public long getTotalCount() {
-
-        return this.totalCount;
-    }
-
-    @Override
-    public void setTotalCount(long count) {
-
-        this.totalCount = count;
-        
-    }
-
-    @Override
-    public int getCurrentPage() {
-
-        return this.currentPage;
-    }
-
-    @Override
-    public void setCurrentPage(int page) {
-
-        this.currentPage = page;
-        
-    }
-
-    @Override
-    public int getTotalPage() {
-        
-        long pages = this.totalCount/this.pageSize;
-        long yun = this.totalCount%this.pageSize;
-        if(yun==0){
-            return (int)pages;
-        }else{
-            return (int) pages + 1;
-        }
-    }
-    
-    @Override
-    public void addOrder(String prop, OrderType type) {
-        if(orderProperty == null){
-            orderProperty = new HashMap<String, OrderType>();
-        }
-        orderProperty.put(prop, type);
-        log.debug("add order condition property("+prop+") = value("+type+")");
     }
 
     @Override
@@ -208,4 +143,45 @@ public abstract class Constraint implements Condition, Order ,Page {
         likeProperty.put(prop, value);
         log.debug("add query condition property("+prop+") like value("+value+")");
     }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    public String getOrderProperty() {
+        return orderProperty;
+    }
+
+    public void setOrderProperty(String orderProperty) {
+        this.orderProperty = orderProperty;
+    }
+
+    public OrderType getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(OrderType orderType) {
+        this.orderType = orderType;
+    }
+    
 }

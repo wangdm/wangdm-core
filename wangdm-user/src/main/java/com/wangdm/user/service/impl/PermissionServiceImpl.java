@@ -10,15 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.entity.Permission;
-import com.wangdm.user.query.PermissionQuery;
 import com.wangdm.user.service.PermissionService;
 
 @Service("permissionService")
@@ -54,23 +55,21 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     }
 
     @Override
-    public List<Dto> query(Query q) {
-        PermissionQuery query = (PermissionQuery)q;
+    public QueryResult query(Query q) {
+
+        log.warn("Unimplement mathod!!!");
+        return null;
+    }
+
+    @Override
+    public List<Dto> getPermission(Integer groupId) {
         
         Constraint constraint = constraintFactory.createConstraint(Permission.class);
         
-        if(query.getGroupId()!=null)
-            constraint.addEqualCondition("group.id", query.getGroupId());
-            
-        if(query.getStatus()!=null)
-            constraint.addEqualCondition("status", query.getStatus());
+        if(groupId!=null)
+            constraint.addEqualCondition("group.id", groupId);
 
-        if(query.getOrder()!=null)
-            constraint.setOrderProperty(query.getOrder());
-        
-        constraint.setPageSize(query.getPageSize());
-        
-        constraint.setCurrentPage(query.getCurrentPage());
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
         List<Permission> entityList = baseDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){

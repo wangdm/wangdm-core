@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constant.EntityStatus;
+import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.constraint.Order.OrderType;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.ui.constant.MenuType;
 import com.wangdm.ui.dto.MenuDto;
@@ -42,7 +43,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
     }
 
     @Override
-    public List<Dto> query(Query q) {
+    public QueryResult query(Query q) {
         MenuQuery query = (MenuQuery)q;
         
         Constraint constraint = constraintFactory.createConstraint(Menu.class);
@@ -50,28 +51,22 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         if(query.getParentId()!=null){
             constraint.addEqualCondition("parent.id", query.getParentId());
         }
+        
+        if(query.getDisplay()!=null){
+            constraint.addEqualCondition("display", query.getDisplay());
+        }
 
         if(query.getType()!=null){
             constraint.addEqualCondition("type", query.getType());
         }
-        
-        if (query.getStatus() != null){
-            constraint.addEqualCondition("status", query.getStatus());
-        }
 
-        if (query.getOrder() != null){
-            constraint.setOrderProperty(query.getOrder());
-        }
-
-        constraint.setPageSize(query.getPageSize());
-        constraint.setCurrentPage(query.getCurrentPage());
+        constraint.setPage(query.getPage());
+        constraint.setSize(query.getSize());
         
         List<Menu> entityList = menuDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){
             return null;
         }
-        
-        query.setTotalCount(constraint.getTotalCount());
         
         List<Dto> dtoList = new ArrayList<Dto>();
         for(Menu entity : entityList){
@@ -80,7 +75,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
             dtoList.add(dto);
         }
         
-        return dtoList;
+        return new QueryResult(query.getPage(), query.getSize(), constraint.getAmount(), dtoList);
     }
 
     @Override
@@ -95,8 +90,9 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
         entityTypeList.add(EntityStatus.NORMAL);
         constraint.addEqualCondition("status", entityTypeList);
-        
-        constraint.addOrder("idx", OrderType.ASC);
+
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
         
         List<Menu> menuList = menuDao.findByConstraint(constraint);
         
@@ -128,8 +124,9 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
         entityTypeList.add(EntityStatus.NORMAL);
         constraint.addEqualCondition("status", entityTypeList);
-        
-        constraint.addOrder("idx", OrderType.ASC);
+
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
         
         List<Menu> menuList = menuDao.findByConstraint(constraint);
         
@@ -163,8 +160,9 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
         entityTypeList.add(EntityStatus.NORMAL);
         constraint.addEqualCondition("status", entityTypeList);
-        
-        constraint.addOrder("idx", OrderType.ASC);
+
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
         
         List<Menu> menuList = menuDao.findByConstraint(constraint);
         

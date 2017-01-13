@@ -19,6 +19,7 @@ import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.dto.RoleDto;
@@ -182,13 +183,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 	}
 
 	@Override
-	public List<Dto> query(Query q) {
+	public QueryResult query(Query q) {
 		UserQuery query = (UserQuery) q;
 
 		Constraint constraint = constraintFactory.createConstraint(User.class);
         
-        if(query.getUsername()!=null && !"".equals(query.getUsername())){
-            constraint.addLikeCondition("username", query.getUsername());
+        if(query.getName()!=null && !"".equals(query.getName())){
+            constraint.addLikeCondition("username", query.getName());
         }
         
         if(query.getEmail()!=null && !"".equals(query.getEmail())){
@@ -199,20 +200,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
             constraint.addLikeCondition("phone", query.getPhone());
         }
 
-        if (query.getGroupId() != null && query.getGroupId() > 0){
-            constraint.addEqualCondition("group.id", query.getGroupId());
+        if (query.getGroup() != null && query.getGroup() > 0){
+            constraint.addEqualCondition("group.id", query.getGroup());
         }
 
 		if (query.getStatus() != null){
 			constraint.addEqualCondition("status", query.getStatus());
 		}
-
-		if (query.getOrder() != null){
-			constraint.setOrderProperty(query.getOrder());
-		}
-
-        constraint.setPageSize(query.getPageSize());
-        constraint.setCurrentPage(query.getCurrentPage());
 		
 		List<User> userList = userDao.findByConstraint(constraint);
 		if (userList == null || userList.size() <= 0) {
@@ -244,7 +238,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 			dtoList.add(dto);
 		}
 
-		return dtoList;
+        return new QueryResult(1,dtoList.size(),dtoList.size(),dtoList);
 	}
 
 	@Override

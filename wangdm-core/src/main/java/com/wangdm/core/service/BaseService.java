@@ -2,7 +2,6 @@ package com.wangdm.core.service;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.entity.Entity;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 
 @SuppressWarnings("unchecked")
 @Transactional
@@ -98,7 +98,7 @@ public abstract class BaseService<E extends Entity> implements Service {
 	}
 
 	@Override
-	public List<Dto> query(Query query) {
+	public QueryResult query(Query query) {
 
 		log.warn("Unimplements method!");
 		return null;

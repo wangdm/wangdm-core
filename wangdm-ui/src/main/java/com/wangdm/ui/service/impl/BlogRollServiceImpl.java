@@ -11,17 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constant.EntityStatus;
+import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.constraint.Order.OrderType;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
-import com.wangdm.core.query.BaseQuery;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.ui.dto.BlogRollDto;
 import com.wangdm.ui.dto.BlogRollShowDto;
 import com.wangdm.ui.entity.BlogRoll;
+import com.wangdm.ui.query.BlogRollQuery;
 import com.wangdm.ui.service.BlogRollService;
 
 @Service("blogrollService")
@@ -48,28 +49,28 @@ public class BlogRollServiceImpl extends BaseService<BlogRoll> implements BlogRo
 	}
 
 	@Override
-	public List<Dto> query(Query q) {
-		BaseQuery query = (BaseQuery) q;
+	public QueryResult query(Query q) {
+	    
+	    BlogRollQuery query = (BlogRollQuery)q;
 
 		Constraint constraint = constraintFactory.createConstraint(BlogRoll.class);
 
-		if (query.getStatus() != null){
-			constraint.addEqualCondition("status", query.getStatus());
-		}
+        if(query.getDisplay()!=null){
+            constraint.addEqualCondition("display", query.getDisplay());
+        }
+        
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
 
-		if (query.getOrder() != null){
-			constraint.setOrderProperty(query.getOrder());
-		}
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
 
-		constraint.setPageSize(query.getPageSize());
-		constraint.setCurrentPage(query.getCurrentPage());
+        constraint.setPage(query.getPage());
+        constraint.setSize(query.getSize());
 
 		List<BlogRoll> entityList = baseDao.findByConstraint(constraint);
 		if (entityList == null || entityList.size() <= 0) {
 			return null;
 		}
-		
-		query.setTotalCount(constraint.getTotalCount());
 
 		List<Dto> dtoList = new ArrayList<Dto>(entityList.size());
 		for (BlogRoll entity : entityList) {
@@ -78,7 +79,7 @@ public class BlogRollServiceImpl extends BaseService<BlogRoll> implements BlogRo
 			dtoList.add(dto);
 		}
 
-		return dtoList;
+		return new QueryResult(query.getPage(), query.getSize(), constraint.getAmount(), dtoList);
 	}
 
     @Override
@@ -92,10 +93,10 @@ public class BlogRollServiceImpl extends BaseService<BlogRoll> implements BlogRo
         entityTypeList.add(EntityStatus.NORMAL);
         constraint.addEqualCondition("status", entityTypeList);
 
-        constraint.addOrder("idx", OrderType.ASC);
-
-        constraint.setCurrentPage(0);
-        constraint.setPageSize(8);
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
+        
+        constraint.setSize(8);
 
         List<BlogRoll> entityList = baseDao.findByConstraint(constraint);
         if (entityList == null || entityList.size() <= 0) {

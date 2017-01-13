@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
-import com.wangdm.core.query.BaseQuery;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.PermissionGroupDto;
 import com.wangdm.user.entity.PermissionGroup;
@@ -54,20 +55,11 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
     }
 
     @Override
-    public List<Dto> query(Query q) {
-        BaseQuery query = (BaseQuery)q;
+    public QueryResult query(Query q) {
         
         Constraint constraint = constraintFactory.createConstraint(PermissionGroup.class);
          
-        if(query.getStatus()!=null)
-            constraint.addEqualCondition("status", query.getStatus());
-
-        if(query.getOrder()!=null)
-            constraint.setOrderProperty(query.getOrder());
-        
-        constraint.setPageSize(query.getPageSize());
-        
-        constraint.setCurrentPage(query.getCurrentPage());
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
         List<PermissionGroup> entityList = baseDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){
@@ -81,7 +73,7 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
             dtoList.add(dto);
         }
         
-        return dtoList;
+        return new QueryResult(1,dtoList.size(),dtoList.size(),dtoList);
     }
 
 }

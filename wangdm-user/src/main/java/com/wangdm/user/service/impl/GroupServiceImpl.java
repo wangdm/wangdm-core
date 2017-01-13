@@ -16,6 +16,7 @@ import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.GroupDto;
 import com.wangdm.user.dto.GroupTreeDto;
@@ -25,7 +26,6 @@ import com.wangdm.user.entity.Group;
 import com.wangdm.user.entity.GroupRole;
 import com.wangdm.user.entity.Role;
 import com.wangdm.user.entity.RolePermission;
-import com.wangdm.user.query.GroupQuery;
 import com.wangdm.user.service.GroupService;
 
 @Service("groupService")
@@ -64,42 +64,10 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
     }
 
     @Override
-    public List<Dto> query(Query q) {
-        GroupQuery query = (GroupQuery)q;
-        
-        Constraint constraint = constraintFactory.createConstraint(Group.class);
-        
-        if(query.getParentId()!=null){
-        	if(query.getParentId().longValue()<=0){
-        		constraint.addEqualCondition("parent.id", null);
-        	}else{
-        		constraint.addEqualCondition("parent.id", query.getParentId());
-        	}
-        }
-            
-        if(query.getStatus()!=null)
-            constraint.addEqualCondition("status", query.getStatus());
+    public QueryResult query(Query q) {
 
-        if(query.getOrder()!=null)
-            constraint.setOrderProperty(query.getOrder());
-        
-        constraint.setPageSize(query.getPageSize());
-        
-        constraint.setCurrentPage(query.getCurrentPage());
-        
-        List<Group> entityList = baseDao.findByConstraint(constraint);
-        if(entityList == null || entityList.size()<=0){
-            return null;
-        }
-        
-        List<Dto> dtoList = new ArrayList<Dto>(entityList.size());
-        for(Group entity : entityList){
-            Dto dto = new GroupDto();
-            dto.fromEntity(entity);
-            dtoList.add(dto);
-        }
-        
-        return dtoList;
+        log.warn("Unimplement mathod!!!");
+        return null;
     }
 
     @Override

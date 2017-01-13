@@ -2,7 +2,7 @@ package com.wangdm.ui.query;
 
 import com.wangdm.core.query.PageQuery;
 
-public class HotspotQuery extends PageQuery {
+public class BlogRollQuery extends PageQuery {
     
     private Boolean display = null;
 

@@ -1,16 +1,18 @@
 package com.wangdm.user.query;
 
-import com.wangdm.core.query.BaseQuery;
+import com.wangdm.core.query.PageQuery;
 
-public class GroupQuery extends BaseQuery {
+public class GroupQuery extends PageQuery {
+    
+    private Long parent;
 
-    private Long parentId;
-
-    public Long getParentId() {
-        return parentId;
+    public Long getParent() {
+        return parent;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setParent(Long parent) {
+        this.parent = parent;
     }
+    
+    
 }

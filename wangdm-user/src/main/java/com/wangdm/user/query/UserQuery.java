@@ -2,26 +2,29 @@ package com.wangdm.user.query;
 
 import java.util.List;
 
-import com.wangdm.core.query.BaseQuery;
+import com.wangdm.core.constant.EntityStatus;
+import com.wangdm.core.query.PageQuery;
 
-public class UserQuery extends BaseQuery {
+public class UserQuery extends PageQuery {
     
-    private String username;
+    private String name;
     
     private String phone;
     
     private String email;
     
-    private Long groupId;
+    private EntityStatus status;
+    
+    private Long group;
     
     private List<Long> roles;
     
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
     
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
     
     public String getPhone() {
@@ -39,13 +42,21 @@ public class UserQuery extends BaseQuery {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    public Long getGroupId() {
-        return groupId;
+
+    public EntityStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EntityStatus status) {
+        this.status = status;
     }
     
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public Long getGroup() {
+        return group;
+    }
+    
+    public void setGroup(Long group) {
+        this.group = group;
     }
     
     public List<Long> getRoles() {

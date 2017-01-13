@@ -15,8 +15,8 @@ import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
-import com.wangdm.core.query.BaseQuery;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.PermissionDto;
 import com.wangdm.user.dto.RoleDto;
@@ -55,20 +55,11 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public List<Dto> query(Query q) {
-        BaseQuery query = (BaseQuery)q;
+    public QueryResult query(Query q) {
         
         Constraint constraint = constraintFactory.createConstraint(Role.class);
-            
-        if(query.getStatus()!=null)
-            constraint.addEqualCondition("status", query.getStatus());
 
-        if(query.getOrder()!=null)
-            constraint.setOrderProperty(query.getOrder());
-        
-        constraint.setPageSize(query.getPageSize());
-        
-        constraint.setCurrentPage(query.getCurrentPage());
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
         List<Role> entityList = baseDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){
@@ -81,8 +72,8 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
             dto.fromEntity(entity);
             dtoList.add(dto);
         }
-        
-        return dtoList;
+
+        return new QueryResult(1,dtoList.size(),dtoList.size(),dtoList);
     }
 
     @Override

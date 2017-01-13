@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wangdm.core.constant.EntityStatus;
+import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
-import com.wangdm.core.constraint.Order.OrderType;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.ui.dto.HotspotDto;
 import com.wangdm.ui.dto.HotspotShowDto;
@@ -45,7 +46,8 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
     }
 
     @Override
-    public List<Dto> query(Query q) {
+    public QueryResult query(Query q) {
+        
         HotspotQuery query = (HotspotQuery)q;
         
         Constraint constraint = constraintFactory.createConstraint(Hotspot.class);
@@ -54,23 +56,18 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
             constraint.addEqualCondition("display", query.getDisplay());
         }
         
-        if (query.getStatus() != null){
-            constraint.addEqualCondition("status", query.getStatus());
-        }
+        constraint.addEqualCondition("status", EntityStatus.NORMAL);
 
-        if (query.getOrder() != null){
-            constraint.setOrderProperty(query.getOrder());
-        }
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
 
-        constraint.setPageSize(query.getPageSize());
-        constraint.setCurrentPage(query.getCurrentPage());
+        constraint.setPage(query.getPage());
+        constraint.setSize(query.getSize());
         
         List<Hotspot> hotspotList = hotspotDao.findByConstraint(constraint);
         if(hotspotList == null || hotspotList.size()<=0){
             return null;
         }
-        
-        query.setTotalCount(constraint.getTotalCount());
         
         List<Dto> dtoList = new ArrayList<Dto>();
         for(Hotspot hotspot : hotspotList){
@@ -79,7 +76,7 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
             dtoList.add(dto);
         }
         
-        return dtoList;
+        return new QueryResult(query.getPage(), query.getSize(), constraint.getAmount(), dtoList);
     }
 
     @Override
@@ -95,11 +92,12 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
         
         Timestamp time = new Timestamp(System.currentTimeMillis());
         constraint.addGreaterCondition("expireTime", time);
-        
-        constraint.addOrder("idx", OrderType.ASC);
-        
-        constraint.setCurrentPage(0);
-        constraint.setPageSize(count);
+
+        constraint.setOrderProperty("idx");
+        constraint.setOrderType(OrderType.ASC);
+
+        constraint.setPage(0);
+        constraint.setSize(count);
         
         List<Hotspot> hotspotList = hotspotDao.findByConstraint(constraint);
         

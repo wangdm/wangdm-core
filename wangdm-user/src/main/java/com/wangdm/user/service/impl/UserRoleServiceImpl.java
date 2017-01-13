@@ -1,7 +1,6 @@
 package com.wangdm.user.service.impl;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
 import com.wangdm.core.query.Query;
+import com.wangdm.core.query.QueryResult;
 import com.wangdm.core.service.BaseService;
 import com.wangdm.user.dto.UserRoleDto;
 import com.wangdm.user.entity.UserRole;
@@ -36,7 +36,7 @@ public class UserRoleServiceImpl extends BaseService<UserRole> implements UserRo
     }
 
     @Override
-    public List<Dto> query(Query query) {
+    public QueryResult query(Query query) {
         return null;
     }
 

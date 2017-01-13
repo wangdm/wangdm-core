@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.CompareBean;
 import com.wangdm.core.constraint.Constraint;
 
@@ -92,16 +93,13 @@ public class HibernateConstraint extends Constraint{
             }
         }
         
-        Map<String, OrderType> orderColumn = this.getOrderProperty();
+        String orderColumn = this.getOrderProperty();
         if(orderColumn!=null){
-            Set<String> keySet = orderColumn.keySet();
-            for(String key : keySet){
-                OrderType type = orderColumn.get(key);
-                if(type==OrderType.ASC){
-                    c.addOrder(Order.asc(key));
-                }else if(type==OrderType.DESC){
-                    c.addOrder(Order.desc(key));
-                }
+            OrderType type = this.getOrderType();
+            if(type==OrderType.ASC){
+                c.addOrder(Order.asc(orderColumn));
+            }else if(type==OrderType.DESC){
+                c.addOrder(Order.desc(orderColumn));
             }
         }
         
