@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
@@ -44,7 +43,6 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
     public void delete(Serializable id) {
         UserProfile userProfile = userProfileDao.findById(id, UserProfile.class);
         if(userProfile!=null){
-            userProfile.setStatus(EntityStatus.DELETE);
             userProfileDao.update(userProfile);
         }
     }
@@ -58,7 +56,6 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
     public void restore(Serializable id) {
         UserProfile userProfile = userProfileDao.findById(id, UserProfile.class);
         if(userProfile!=null){
-            userProfile.setStatus(EntityStatus.NORMAL);
             userProfileDao.update(userProfile);
         }
     }
@@ -100,7 +97,6 @@ public class UserProfileServiceImpl extends BaseService<UserProfile> implements 
     @Override
     public void update(Dto dto) {
         UserProfile userProfile = (UserProfile) dto.toEntity(UserProfile.class);
-        userProfile.setStatus(EntityStatus.NORMAL);
         UserProfileDto userProfileDto = (UserProfileDto) dto;
         if("SECRET".equals(userProfileDto.getGender())){
             userProfile.setGender(Gender.SECRET); 

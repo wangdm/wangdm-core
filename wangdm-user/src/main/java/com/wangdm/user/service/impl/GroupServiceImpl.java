@@ -79,11 +79,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
             constraint.addEqualCondition("role.id", roleId);
             List<GroupRole> roleList = groupRoleDao.findByConstraint(constraint);
             if(roleList!=null && roleList.size()>=1){
-                GroupRole groupRole = roleList.get(0);
-                if(groupRole.getStatus()!=EntityStatus.NORMAL){
-                    groupRole.setStatus(EntityStatus.NORMAL);
-                    groupRoleDao.update(groupRole);
-                }
                 break;
             }
             
@@ -100,7 +95,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
             GroupRole groupRole = new GroupRole();
             groupRole.setGroup(group);
             groupRole.setRole(role);
-            groupRole.setStatus(EntityStatus.NORMAL);
             groupRoleDao.create(groupRole);
             
             

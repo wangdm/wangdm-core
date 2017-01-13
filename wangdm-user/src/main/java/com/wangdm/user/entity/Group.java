@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 
@@ -38,10 +37,6 @@ public class Group extends BaseEntity {
 
     @OneToMany(targetEntity=GroupRole.class, mappedBy="role")
     private Set<GroupRole> roles;
-    
-    public Group(){
-        this.setStatus(EntityStatus.NORMAL);
-    }
     
     public boolean hasPermission(Permission perm, int action){
     	for(GroupRole groupRole : roles){

@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.entity.BaseEntity;
 
 @Entity
@@ -30,10 +29,6 @@ public class PermissionGroup extends BaseEntity {
     
     @OneToMany(targetEntity=Group.class, mappedBy="parent")
     private List<PermissionGroup> children;
-    
-    public PermissionGroup(){
-        this.setStatus(EntityStatus.NORMAL);
-    }
 
     public String getName() {
         return name;

@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.dao.Dao;
 import com.wangdm.core.dto.Dto;
+import com.wangdm.core.entity.BaseEntity;
 import com.wangdm.core.entity.Entity;
 import com.wangdm.core.query.Query;
 import com.wangdm.core.query.QueryResult;
@@ -65,8 +65,8 @@ public abstract class BaseService<E extends Entity> implements Service {
     public void delete(Serializable id) {
         
         E entity = baseDao.findById(id, clazz);
-        if( entity != null ){
-            entity.setStatus(EntityStatus.DELETE);
+        if( entity != null && entity instanceof BaseEntity){
+            ((BaseEntity)entity).setDelete(true);;
             baseDao.update(entity);
         }
         
@@ -83,8 +83,8 @@ public abstract class BaseService<E extends Entity> implements Service {
     public void restore(Serializable id) {
         
         E entity = baseDao.findById(id, clazz);
-        if( entity != null ){
-            entity.setStatus(EntityStatus.NORMAL);
+        if( entity != null && entity instanceof BaseEntity){
+            ((BaseEntity)entity).setDelete(false);
             baseDao.update(entity);
         }
         

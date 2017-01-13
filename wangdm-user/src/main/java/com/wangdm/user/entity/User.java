@@ -10,11 +10,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.wangdm.core.constant.EntityType;
-import com.wangdm.core.entity.BaseEntity;
+import com.wangdm.core.entity.StatusEntity;
 
 @Entity
 @Table(name = "user")
-public class User extends BaseEntity {
+public class User extends StatusEntity {
 
 	private static final long serialVersionUID = -2373734406726264823L;
 

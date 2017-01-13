@@ -5,7 +5,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 
@@ -24,10 +23,6 @@ public class RolePermission extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="permissionId", nullable=false)
     private Permission permission;
-    
-    public RolePermission(){
-        this.setStatus(EntityStatus.NORMAL);
-    }
 
 	public Role getRole() {
 		return role;

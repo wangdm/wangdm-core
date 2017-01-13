@@ -6,7 +6,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.EntityType;
 import com.wangdm.core.entity.BaseEntity;
 
@@ -30,10 +29,6 @@ public class Permission extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="groupId", referencedColumnName="id")
     private PermissionGroup group;
-    
-    public Permission(){
-        this.setStatus(EntityStatus.NORMAL);
-    }
 
 	public String getName() {
 		return name;

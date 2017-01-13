@@ -77,7 +77,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 		if (user == null) {
 			return null;
 		}else{
-		    user.setStatus(EntityStatus.NORMAL);
+		    user.setStatus(EntityStatus.NORMAL.toString());
 	        return userDao.create(user);   
 		}
 		
@@ -121,38 +121,17 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 	}
 
 	@Override
-	public void delete(Serializable id) {
-
-		User user = userDao.findById(id, User.class);
-		if (user != null) {
-			user.setStatus(EntityStatus.DELETE);
-			userDao.update(user);
-		}
-	}
-
-	@Override
 	public void erase(Serializable id) {
 		certificationDao.deleteById(id, Certification.class);
 		profileDao.deleteById(id, UserProfile.class);
 		userDao.deleteById(id, User.class);
-	}
-
-	@Override
-	public void restore(Serializable id) {
-
-		User user = userDao.findById(id, User.class);
-		if (user != null) {
-			user.setStatus(EntityStatus.NORMAL);
-			userDao.update(user);
-		}
-
 	}
     
     public void verify(Serializable id) {
 
         User user = userDao.findById(id, User.class);
         if (user != null) {
-            user.setStatus(EntityStatus.NORMAL);
+            user.setStatus(EntityStatus.NORMAL.toString());
             userDao.update(user);
         }
 
@@ -162,7 +141,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 
         User user = userDao.findById(id, User.class);
         if (user != null) {
-            user.setStatus(EntityStatus.FORBIDDEN);
+            user.setStatus(EntityStatus.FORBIDDEN.toString());
             userDao.update(user);
         }
 
@@ -250,11 +229,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 			constraint.addEqualCondition("role.id", roleId);
 			List<UserRole> roleList = userRoleDao.findByConstraint(constraint);
 			if (roleList != null && roleList.size() >= 1) {
-				UserRole userRole = roleList.get(0);
-				if (userRole.getStatus() != EntityStatus.NORMAL) {
-					userRole.setStatus(EntityStatus.NORMAL);
-					userRoleDao.update(userRole);
-				}
 				break;
 			}
 
@@ -271,7 +245,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 			UserRole userRole = new UserRole();
 			userRole.setUser(user);
 			userRole.setRole(role);
-			userRole.setStatus(EntityStatus.NORMAL);
 			userRoleDao.create(userRole);
 
 		} while (false);

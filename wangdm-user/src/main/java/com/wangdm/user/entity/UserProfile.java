@@ -7,7 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.entity.ForeignEntity;
 import com.wangdm.user.constant.Gender;
 
@@ -39,10 +38,6 @@ public class UserProfile extends ForeignEntity {
 
 	@Column(name="motto", length=250)
 	private String motto;
-    
-    public UserProfile(){
-        this.setStatus(EntityStatus.NORMAL);
-    }
 
 	@Override
 	public Long getId() {
