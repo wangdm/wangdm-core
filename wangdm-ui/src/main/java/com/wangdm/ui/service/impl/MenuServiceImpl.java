@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
@@ -86,10 +85,6 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         constraint.addEqualCondition("parent.id", id);
         
         constraint.addEqualCondition("display", true);
-        
-        List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
-        entityTypeList.add(EntityStatus.NORMAL);
-        constraint.addEqualCondition("status", entityTypeList);
 
         constraint.setOrderProperty("idx");
         constraint.setOrderType(OrderType.ASC);
@@ -120,10 +115,6 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         constraint.addEqualCondition("display", true);
         
         constraint.addEqualCondition("type", MenuType.MENU);
-        
-        List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
-        entityTypeList.add(EntityStatus.NORMAL);
-        constraint.addEqualCondition("status", entityTypeList);
 
         constraint.setOrderProperty("idx");
         constraint.setOrderType(OrderType.ASC);
@@ -156,10 +147,6 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
         constraint.addEqualCondition("display", true);
         
         constraint.addEqualCondition("type", MenuType.NAVIGATION);
-        
-        List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
-        entityTypeList.add(EntityStatus.NORMAL);
-        constraint.addEqualCondition("status", entityTypeList);
 
         constraint.setOrderProperty("idx");
         constraint.setOrderType(OrderType.ASC);

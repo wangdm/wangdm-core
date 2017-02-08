@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
@@ -59,8 +58,6 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         
         Constraint constraint = constraintFactory.createConstraint(Role.class);
 
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
-        
         List<Role> entityList = baseDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){
             return null;
@@ -80,7 +77,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     public List<PermissionDto> getPermission(Long roleId) {
         
         Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
+
         constraint.addEqualCondition("role.id", roleId);
         
         List<RolePermission> rolePermissionList = rolePermissionDao.findByConstraint(constraint);
@@ -111,7 +108,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         }
         //先删除
         Constraint constraint = constraintFactory.createConstraint(RolePermission.class);
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
+
         constraint.addEqualCondition("role.id", roleId);
         
         List<RolePermission> rolePermissionList = rolePermissionDao.findByConstraint(constraint);

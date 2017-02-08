@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constant.OrderType;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
@@ -55,8 +54,6 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
         if(query.getDisplay()!=null){
             constraint.addEqualCondition("display", query.getDisplay());
         }
-        
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
 
         constraint.setOrderProperty("idx");
         constraint.setOrderType(OrderType.ASC);
@@ -85,10 +82,6 @@ public class HotspotServiceImpl extends BaseService<Hotspot> implements HotspotS
         Constraint constraint = constraintFactory.createConstraint(Hotspot.class);
         
         constraint.addEqualCondition("display", true);
-        
-        List<EntityStatus> entityTypeList = new ArrayList<EntityStatus>();
-        entityTypeList.add(EntityStatus.NORMAL);
-        constraint.addEqualCondition("status", entityTypeList);
         
         Timestamp time = new Timestamp(System.currentTimeMillis());
         constraint.addGreaterCondition("expireTime", time);

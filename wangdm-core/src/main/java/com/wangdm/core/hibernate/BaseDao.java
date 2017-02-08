@@ -33,7 +33,6 @@ public class BaseDao<E extends Entity> implements Dao<E> {
     public BaseDao(){
         String fullClassName = this.getClass().getName();
         String className = fullClassName.substring(fullClassName.lastIndexOf('.')+1);
-        log.error("this dao class name is "+ fullClassName);
         if(!"BaseDaoImpl".equals(className))
         {
             try{
@@ -41,7 +40,7 @@ public class BaseDao<E extends Entity> implements Dao<E> {
                 clazz = (Class<E>) type.getActualTypeArguments()[0];
                 log.debug("this entity class name is "+ clazz.getName());
             }catch(ClassCastException e){
-                log.error("Get parameterizedType failed in"+ fullClassName);
+                log.error("Get parameterizedType failed in "+ fullClassName);
             }
         }
     }

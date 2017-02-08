@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
@@ -58,8 +57,6 @@ public class PermissionGroupServiceImpl extends BaseService<PermissionGroup> imp
     public QueryResult query(Query q) {
         
         Constraint constraint = constraintFactory.createConstraint(PermissionGroup.class);
-         
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
         List<PermissionGroup> entityList = baseDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){

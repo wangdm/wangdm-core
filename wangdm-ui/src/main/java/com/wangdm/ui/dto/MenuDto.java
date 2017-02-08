@@ -8,9 +8,6 @@ public class MenuDto extends BaseDto {
 
     @DtoMapper(entity=Menu.class, field="id")
     private String id;
-
-    @DtoMapper(entity=Menu.class, field = "status")
-    private String status;
     
     @DtoMapper(entity=Menu.class, field="name")
     private String name;
@@ -44,14 +41,6 @@ public class MenuDto extends BaseDto {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getName() {

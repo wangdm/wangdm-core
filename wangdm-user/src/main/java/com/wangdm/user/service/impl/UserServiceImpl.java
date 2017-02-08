@@ -299,7 +299,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 
 		Constraint constraint = constraintFactory.createConstraint(UserRole.class);
 		constraint.addEqualCondition("user.id", userId);
-		constraint.addNonCondition("status", EntityStatus.DELETE);
 
 		List<UserRole> roleList = userRoleDao.findByConstraint(constraint);
 		if (roleList == null || roleList.size() <= 0) {
@@ -321,7 +320,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 
 		Constraint constraint = constraintFactory.createConstraint(UserRole.class);
 		constraint.addEqualCondition("user.id", userId);
-		constraint.addEqualCondition("status", EntityStatus.NORMAL);
 
 		List<UserRole> roleList = userRoleDao.findByConstraint(constraint);
 		if (roleList == null || roleList.size() <= 0) {
@@ -334,7 +332,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService, I
 			constraint.clear();
 			constraint.setEntityClass(RolePermission.class);
 			constraint.addEqualCondition("role", role);
-			constraint.addEqualCondition("status", EntityStatus.NORMAL);
 			List<RolePermission> list = rolePermissionDao.findByConstraint(constraint);
 			if (list != null && list.size() > 0) {
 				rolePermissionList.addAll(list);

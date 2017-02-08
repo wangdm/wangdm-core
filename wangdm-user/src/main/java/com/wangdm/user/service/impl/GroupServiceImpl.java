@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wangdm.core.constant.EntityStatus;
 import com.wangdm.core.constraint.Constraint;
 import com.wangdm.core.constraint.ConstraintFactory;
 import com.wangdm.core.dao.Dao;
@@ -128,7 +127,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
         
         Constraint constraint = constraintFactory.createConstraint(GroupRole.class);
         constraint.addEqualCondition("group.id", groupId);
-        constraint.addNonCondition("status", EntityStatus.DELETE);
         
         List<GroupRole> roleList = groupRoleDao.findByConstraint(constraint);
         if(roleList==null || roleList.size()<=0){
@@ -151,7 +149,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
         
         Constraint constraint = constraintFactory.createConstraint(GroupRole.class);
         constraint.addEqualCondition("group.id", groupId);
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
         List<GroupRole> roleList = groupRoleDao.findByConstraint(constraint);
         if(roleList==null || roleList.size()<=0){
@@ -164,7 +161,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
             constraint.clear();
             constraint.setEntityClass(RolePermission.class);
             constraint.addEqualCondition("role", role);
-            constraint.addEqualCondition("status", EntityStatus.NORMAL);
             List<RolePermission> list= rolePermissionDao.findByConstraint(constraint);
             if(list!=null && list.size()>0){
                 rolePermissionList.addAll(list);
@@ -188,7 +184,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
 		}
 
         Constraint constraint = constraintFactory.createConstraint(Group.class);
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         constraint.addEqualCondition("parent.id", groupId);
 		List<Group> groupList = baseDao.findByConstraint(constraint);
 		
@@ -234,7 +229,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
 		Group group = null;
 		
         Constraint constraint = constraintFactory.createConstraint(Group.class);
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
 		if(groupId==null || groupId.longValue()<=0){
 	        constraint.addEqualCondition("parent.id", null);
@@ -264,7 +258,6 @@ public class GroupServiceImpl extends BaseService<Group> implements GroupService
         
         Constraint constraint = constraintFactory.createConstraint(Group.class);
 		constraint.addEqualCondition("parent.id", groupId);
-        constraint.addEqualCondition("status", EntityStatus.NORMAL);
         
         List<Group> entityList = baseDao.findByConstraint(constraint);
         if(entityList == null || entityList.size()<=0){
